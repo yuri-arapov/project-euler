@@ -1,0 +1,39 @@
+;; sieve-primes.scm
+;;
+;; Sieve of Eratosthenes
+
+
+;; some compatibility stuff
+(define make-bit-string             make-bitvector)
+(define bit-string-ref              bitvector-ref)
+(define (bit-string-clear! bs idx) (bitvector-set! bs idx #f))
+
+
+(define primes-bit-string #f)
+
+
+(define (prime? n)
+  (and (> n 1)
+       (< n (bitvector-length primes-bit-string))
+       (bit-string-ref primes-bit-string n)))
+
+
+(define (sieve-primes limit)
+
+  (define (iter n)
+
+    (define (strike-out x)
+      (cond ((< x limit)
+             (bit-string-clear! primes-bit-string x)
+             (strike-out (+ x n)))))
+
+    (cond ((< n limit)
+           (if (bit-string-ref primes-bit-string n)
+             (strike-out (+ n n)))
+           (iter (+ n 1)))))
+
+  (set! primes-bit-string (make-bit-string limit #t))
+  (iter 2))
+
+
+;; end of file

@@ -1,0 +1,7 @@
+p34.scm:35:(define (number->digits n)
+p34.scm:46:          (number->digits (quotient n 10)))))
+p34.scm:69:    (apply + (map digit->factorial (number->digits n))))
+p35.scm:27:(define (number->digits n)
+p35.scm:33:          (number->digits (quotient n 10)))))
+p5.scm:29:(define (split-number-into-primes n)
+p5.scm:66:      (iter (union ll (split-number-into-primes from)) (+ from 1) to)))

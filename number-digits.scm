@@ -21,9 +21,9 @@
     (cons (remainder n 10) 
           (number->digits (quotient n 10)))))
 
-(define (number->digits n)
-  (if (< n 10)
-    (list n)
-    (cons (number->digits (quotient n 10)) (list (remainder n 10)))))
+;;(define (number->digits n)
+;;  (if (< n 10)
+;;    (list n)
+;;    (cons (number->digits (quotient n 10)) (list (remainder n 10)))))
 
 ;; end of file

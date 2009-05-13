@@ -52,14 +52,20 @@
 (define (p58)
   (let loop ((len 3)
              (ndiags 1)
-             (nprimes 0))
+             (nprimes 0)
+             (prev-ratio 100))
     (let* ((nd (+ ndiags 4))
            (np (+ nprimes (length (filter prime? (spiral-len->corners len)))))
            (ratio (/ np nd)))
-      (format #t "len ~a, ratio ~a (~a/~a)~%" len (* 1. ratio) np nd)
+      (format #t "~a len ~a, ratio ~a (~a/~a)~%" 
+                  (if (> ratio prev-ratio) "+" " ")
+                  len 
+                  (* 1. ratio) 
+                  np 
+                  nd)
       (if (< ratio 1/10)
         len
-        (loop (+ len 2) nd np)))))
+        (loop (+ len 2) nd np ratio)))))
 
 
 

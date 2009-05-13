@@ -20,14 +20,21 @@
   ;;   (x 'first)
   ;;   (x 'next)
   ;;   (x 'prime? 34)
-  ;;   (x 'prime" 34 35 36 37) ;; will return list of booleans
+  ;;   (x 'prime? 34 35 36 37) ;; will return list of booleans
 
 
   (define (sqr x) (* x x))
   ;; return square of the argument
 
 
-  (let* ((primes (list 2 3))                  ;; [initial] list of primes.
+  (define (divisor? x div) (zero? (remainder x div)))
+  ;; return true if div is divisor of x
+
+
+  (let* (;; primes, last-prime-ptr, and ptr are the state variables
+         ;; of the generator.
+
+         (primes (list 2 3))                  ;; [initial] list of primes.
                                               ;; 3 is added to simplify adding
                                               ;; new primes: 3+2, 5+2, etc., since
                                               ;; only odd number are candidates for primes.
@@ -40,21 +47,21 @@
                                               ;; operators.
 
 
-    (define (expand)
+    (define (expand-primes-list)
       ;; append one more prime to the primes list.
       (let loop ((candidate (+ (last) 2))
-                 (divizors primes))
-        (cond ((or (null? divizors)
-                   (> (sqr (car divizors)) candidate))
+                 (divisors primes))
+        (cond ((or (null? divisors)
+                   (> (sqr (car divisors)) candidate))
                (let ((new-pair (cons candidate '())))
                  (set-cdr! last-prime-ptr new-pair)
                  (set! last-prime-ptr new-pair)))
 
-              ((zero? (remainder candidate (car divizors)))
+              ((divisor? candidate (car divisors))
                (loop (+ candidate 2) primes))
 
               (else
-                (loop candidate (cdr divizors))))))
+                (loop candidate (cdr divisors))))))
 
 
     (define (first)
@@ -69,13 +76,14 @@
 
 
     (define (next)
-      ;; return next prime (relatively to previous calls of 'first or 'next operators).
+      ;; return next prime (relatively to previous calls 
+      ;; of 'first or 'next operators).
       ;; list of primes is expanded if needed.
       (cond ((null? ptr)
              (first))
             (else
               (if (null? (cdr ptr))
-                (expand))
+                (expand-primes-list))
               (set! ptr (cdr ptr))
               (car ptr))))
 
@@ -84,27 +92,28 @@
       ;; test if given number is a prime.
       ;; list of primes is expanded if needed.
       ;;
-      ;; FIXME: 'prime? and 'expand share the same code.
+      ;; FIXME: 'prime? and 'expand-primes-list share the same code.
       ;; FIXME: there must be a way to have this code
       ;; FIXME: written just once.
 
       (while (< (last) n) ;; NOTE: 'while' is non-standard
-        (expand))
+        (expand-primes-list))
 
-      (let test-loop ((divizors primes))
-        (cond ((or (null? divizors)
-                   (> (sqr (car divizors)) n))
+      (let test-loop ((divisors primes))
+        (cond ((or (null? divisors)
+                   (> (sqr (car divisors)) n))
                #t)
 
-              ((zero? (remainder n (car divizors)))
+              ((divisor? n (car divisors))
                #f)
 
               (else
-                (test-loop (cdr divizors))))))
+                (test-loop (cdr divisors))))))
 
 
     (lambda (operator . args)
-      ;; main dispatcher
+      ;; main dispatcher (this is the function that (make-primes-generator)
+      ;; returns as a result).
       (cond ((equal? operator 'first)
              (first))
 

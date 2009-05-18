@@ -26,4 +26,9 @@
 ;;    (list n)
 ;;    (cons (number->digits (quotient n 10)) (list (remainder n 10)))))
 
+
+(define (digits->number dd)
+  (reduce (lambda (d res) (+ (* res 10) d)) 1 dd))
+
+
 ;; end of file

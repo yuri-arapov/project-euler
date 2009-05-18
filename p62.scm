@@ -58,7 +58,7 @@
 
             ((equal-elements? (car in) (car tmp))
              (loop (cdr in) 
-                   (reverse (cons (car in) tmp))
+                   (cons (car in) tmp)
                    out))
 
             (else
@@ -96,11 +96,23 @@
 
 (define (fff len ls)
   (let* ((a (ff ls))
+         ;; map list ls: n -> tuple: (n n^3 n^3-as-sorted-digits)
+
          (b (sort-list a (lambda (x y) (string-ci< (third x) (third y)))))
+         ;; sort list by last tuple member: n^3-as-sorted-digits
+
          (c (join-equal-elements b (lambda (x y) (string-ci=? (third x) (third y)))))
+         ;; collect equlal list elements
+
          (d (filter (lambda (i) (= len (length i))) c))
+         ;; get rid of all chains that don't match given length
+
          (e (map (lambda (i) (sort-list i (lambda (x y) (< (car x) (car y))))) d))
+         ;; sort every chain by first tuple member: n
+
          (f (sort-list e (lambda (x y) (< (caar x) (caar y))))))
+         ;; sort chains by first tuple member of first chain element
+
     (ll (car f))))
 
 

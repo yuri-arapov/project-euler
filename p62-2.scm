@@ -13,20 +13,23 @@
 ;; cube.
 ;;
 ;; Answer: 127035954683
+;;
+;; Changelog:
+;;   * Performance improvements by Goedel encoding, see
+;;     http://projecteuler.net/index.php?section=forum&id=62&page=4
 
 
 (load "range.scm")
 (load "ll.scm")
 
 
-(define (digit->goedel d)
-  (vector-ref '#(2 3 5 7 11 13 17 19 23 29) d))
-
 ;;
 ;; Encode digits as Goedel number.
 ;;
 (define (goedel-number digits)
-  (apply * (map digit->goedel digits)))
+  (apply * (map (lambda (d) 
+                  (vector-ref '#(2 3 5 7 11 13 17 19 23 29) d)) 
+                digits)))
 
 
 ;;
@@ -98,16 +101,16 @@
 
 (define (fff len ls)
   (let* ((a (ff ls))
-         ;; map list ls: n -> tuple: (n n^3 n^3-as-sorted-digits)
+         ;; map list ls: n -> tuple: (n n^3 n^3-as-goedel-number)
 
          (b (sort-list a (lambda (x y) (< (third x) (third y)))))
          ;; sort list by last tuple member: n^3-as-sorted-digits
 
          (c (join-equal-elements b (lambda (x y) (= (third x) (third y)))))
-         ;; collect equlal list elements
+         ;; collect equal list elements
 
          (d (filter (lambda (i) (= len (length i))) c))
-         ;; get rid of all chains that don't match given length
+         ;; collect chains of given length
 
          (e (map (lambda (i) (sort-list i (lambda (x y) (< (car x) (car y))))) d))
          ;; sort every chain by first tuple member: n

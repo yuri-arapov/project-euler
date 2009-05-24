@@ -39,6 +39,8 @@
 ;;   (unique '(1 1 1 2 2 2 3 3 3 3 3 4))
 ;;   (1 2 3 4)
 ;;
+;; Note: not used.
+;;
 (define (unique l)
   (let loop ((l l)
              (r '()))
@@ -90,6 +92,10 @@
   (reduce (lambda (d res) (+ (* res 10) d)) 0 dd))
 
 
+;;
+;; First step of data transformation: turn each number n into tuple
+;; containing (n, n^3, n^3-goedel-encoded).
+;;
 (define (ff ls)
   (map (lambda (n)
          (let* ((nnn (* n n n))
@@ -99,6 +105,12 @@
        ls))
 
 
+;;
+;; Main program.
+;;
+;; len is a number of cube permutations we're interested in.
+;; ls is a list of consecutive numbers.
+;;
 (define (fff len ls)
   (let* ((a (ff ls))
          ;; map list ls: n -> tuple: (n n^3 n^3-as-goedel-number)

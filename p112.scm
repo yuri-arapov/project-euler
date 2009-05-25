@@ -68,6 +68,7 @@
 ;;       (format #t "a: ~a\n" a)
 ;;       (format #t "b: ~a\n" b)
 ;;       (format #t "c: ~a\n" c)
+;;       (format #t "d: ~a\n" d)
       (if (null? d)
         #f
         (not (every (lambda (s) (= (car d) s))  ;; make sure elements of 'd' are not the same

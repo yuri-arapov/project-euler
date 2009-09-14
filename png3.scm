@@ -2,6 +2,10 @@
 ;;
 ;; prime numbers generator
 ;;
+;; The idea was to make it faster than png2.scm by caching
+;; squared primes, but measurements didn't show any
+;; speed improvements (integer multiplication is faster than
+;; car-ing?).
 
 
 (define (make-primes-generator)

@@ -29,17 +29,19 @@
 ;; is the side length of the square spiral for which the ratio of primes along
 ;; both diagonals first falls below 10%?
 ;;
-;; Answer: ???
+;; Answer: 26241
+;;
+;; NOTE: bottleneck is prime? function.
 ;;      
 
 
-(load "png.scm")
+(load "png2.scm")
 (define *png* (make-primes-generator))
 (define (prime? x) (*png* 'prime? x))
 
 
 ;;(load "sieve-primes.scm")
-;;(sieve-primes 10000000)
+;;(sieve-primes 5000000)
 
 
 

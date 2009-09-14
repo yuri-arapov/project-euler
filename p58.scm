@@ -40,11 +40,6 @@
 (define (prime? x) (*png* 'prime? x))
 
 
-;;(load "sieve-primes.scm")
-;;(sieve-primes 5000000)
-
-
-
 (define (spiral-len->corners len)
   (let ((ll  (* len len))
         (l-1 (- len 1)))
@@ -59,12 +54,12 @@
     (let* ((nd (+ ndiags 4))
            (np (+ nprimes (length (filter prime? (spiral-len->corners len)))))
            (ratio (/ np nd)))
-      (format #t "~a len ~a, ratio ~a (~a/~a)~%" 
-                  (if (> ratio prev-ratio) "+" " ")
-                  len 
-                  (* 1. ratio) 
-                  np 
-                  nd)
+;;      (format #t "~a len ~a, ratio ~a (~a/~a)~%" 
+;;                  (if (> ratio prev-ratio) "+" " ")
+;;                  len 
+;;                  (* 1. ratio) 
+;;                  np 
+;;                  nd)
       (if (< ratio 1/10)
         len
         (loop (+ len 2) nd np ratio)))))

@@ -13,7 +13,7 @@
   ;;                call of 'first or 'next).
   ;;   'last     -- return last prime number determined so far.
   ;;   'prime?   -- test if given number is prime.
-  ;;   'show     -- return list of prime number determined so far.
+  ;;   'show     -- return list of prime numbers determined so far.
   ;;
   ;; example:
   ;;   (define x (make-primes-generator))

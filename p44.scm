@@ -21,55 +21,59 @@
 ;; difference is pentagonal and D = |Pk − Pj| is minimised; what is the value
 ;; of D?
 ;;
-;; Answer: ???
+;; Answer: 5482660
+;;
+;; FIXME: Bruteforce with some memoization.  Quite slow.
 
 
 (load "range.scm")
-(load "print.scm")
 
 
 (define (pentagonal n)
   (/ (* n (- (* 3 n) 1)) 2))
 
 
-(define (pentagonal? p)
-  (let ((n (/ (+ 1 (expt (+ 1 (* 24 p)) 0.5)) 6)))
-    (if (integer? n)
-      (inexact->exact n)
-      #f)))
+;; (define (pentagonal? p)
+;;   (let ((n (/ (+ 1 (expt (+ 1 (* 24 p)) 0.5)) 6)))
+;;     (if (integer? n)
+;;       (inexact->exact n)
+;;       #f)))
 
 
-(define (p44 limit)
+(define (p44 max-n)
+   
+  (define max-pent (pentagonal max-n))
 
-  (let* ((pentagonals (list->vector (map pentagonal (range 0 limit))))
-         (pp          (list->vector (map pentagonal? (range 0 (* 2 (pentagonal limit)))))))
+  (let ((pents      (map pentagonal (range 1 max-n)))
+        (pents-bits (make-bitvector (+ 1 max-pent) #f)))
 
-    (define (p? n)
-      (vector-ref pp n))
+    (define (pentagonal? n) (and (<= n max-pent) (bitvector-ref pents-bits n)))
 
-    (define (loop res j k)
-      (cond ((= k j) 
-             (if (zero? (remainder (+ j 1) 100))
-               (println (+ j 1)))
-             (loop res (+ j 1) 1))
-            ((> j limit) res)
+    (define (iter p1 p2)
+      (cond ((null? p1)
+             #t)
+            ((null? p2)
+             (iter (cdr p1) (cdr p1)))
             (else
-              (let* ((pk (vector-ref pentagonals k))
-                     (pj (vector-ref pentagonals j))
-                     (d  (- pj pk)))
+              (let* ((pp1    (car p1))
+                     (pp2    (car p2))
+                     (p2-p1  (- pp2 pp1))
+                     (p2-p1? (pentagonal? p2-p1))
+                     (p2+p1  (+ pp2 pp1))
+                     (p2+p1? (pentagonal? p2+p1)))
+                (cond ((and p2-p1? p2+p1?)
+                       (format #t "* ~a - ~a = ~a\n" pp2 pp1 p2-p1)
+                       (format #t "* ~a + ~a = ~a\n" pp2 pp1 p2+p1)
+                       (list pp2 pp1))
+                      (else
+                        (if p2-p1?
+                          (format #t " ~a - ~a = ~a\n" pp2 pp1 p2-p1))
+                        (if p2+p1?
+                          (format #t " ~a + ~a = ~a\n" pp2 pp1 p2+p1))
+                        (iter p1 (cdr p2))))))))
 
-;;                (if (pentagonal? (- pj pk))
-;;                  (println "- " j " " k " " (pentagonal? (- pj pk))))
-;;                (if (pentagonal? (+ pj pk))
-;;                  (println "+ " j " " k " " (pentagonal? (+ pj pk))))
-
-                (if (and (p? (+ pk pj)) 
-                         (p? d)
-                         (< d (car res)))
-                  (loop (list d k pk j pj) j (+ k 1))
-                  (loop res                j (+ k 1)))))))
-
-    (loop (list (expt 100 10)) 2 1)))
+    (for-each (lambda (n) (bitvector-set! pents-bits n #t)) pents)
+    (iter pents pents)))
 
 
 ;; end of file

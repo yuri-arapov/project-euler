@@ -47,7 +47,7 @@
 ;;
 ;; Answer: 272
 ;;
-;; NOTE: May need to check that GDC of resultant numerator and denominator is 1.
+;; NOTE: May need to check that GCD of resultant numerator and denominator is 1.
 ;;
 ;; NOTE: Couldn't work without Scheme's support of bignums.
 

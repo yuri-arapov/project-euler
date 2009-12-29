@@ -1,6 +1,6 @@
 ;; number-digits.scm
 ;;
-;; transform integer number to the list of digits
+;; transform integer number to the list of digits and vise versa
 ;;
 ;; example:
 ;;

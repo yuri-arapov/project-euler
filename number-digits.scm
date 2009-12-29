@@ -4,12 +4,12 @@
 ;;
 ;; example:
 ;;
-;;   (number->digits 123) : (3 2 1)
+;;   (number->digits 123) : (1 2 3)
 
 
 (define (number->digits n)
 ;; return list of decimal digits this number is made of
-;; (right to left: lower digits go first)
+;; (higher digits first)
 ;;
   (define (iter ls n)
     (if (< n 10)
@@ -28,7 +28,7 @@
 
 
 (define (digits->number dd)
-  (reduce (lambda (d res) (+ (* res 10) d)) 1 dd))
+  (reduce (lambda (d res) (+ (* res 10) d)) 0 dd))
 
 
 ;; end of file

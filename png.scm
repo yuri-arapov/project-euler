@@ -100,7 +100,10 @@
         (expand-primes-list))
 
       (let test-loop ((divisors primes))
-        (cond ((or (null? divisors)
+        (cond ((= 1 n)
+               #f)
+
+              ((or (null? divisors)
                    (> (sqr (car divisors)) n))
                #t)
 

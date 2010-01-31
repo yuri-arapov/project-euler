@@ -36,10 +36,10 @@
 
 
 (define (next-prime n)
-  (let loop ((n (+ n 2)))
-    (if (prime? n)
-      n
-      (loop (+ n 2)))))
+  (let loop ((p (+ n 2)))
+    (if (prime? p)
+      p
+      (loop (+ p 2)))))
 
 
 ;; Solve problem 60

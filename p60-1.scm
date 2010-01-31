@@ -35,6 +35,13 @@
       (loop (* m 10)))))
 
 
+(define (next-prime n)
+  (let loop ((n (+ n 2)))
+    (if (prime? n)
+      n
+      (loop (+ n 2)))))
+
+
 ;; Solve problem 60
 ;; Example:
 ;;   (p60 999 4) -> gives four smallest primes described in
@@ -60,27 +67,21 @@
           ((> candidate max-num)
            (if (null? ls)
              #f
-             (iter (+ 1 (car ls))
+             (iter (next-prime (car ls))
                    (cdr ls)
                    (+ 1 len)
                    (+ 1 iterno))))
 
-          ((prime? candidate)
+          (else
            (if (every (lambda (n) (good? candidate n)) ls)
-             (iter (+ 1 candidate)
+             (iter (next-prime candidate)
                    (cons candidate ls)
                    (- len 1)
                    (+ 1 iterno))
-             (iter (+ 1 candidate)
+             (iter (next-prime candidate)
                    ls
                    len
-                   (+ 1 iterno))))
-
-          (else
-            (iter (+ 1 candidate)
-                  ls
-                  len
-                  (+ 1 iterno)))))
+                   (+ 1 iterno))))))
 
   (iter 3 '() len 1))
 

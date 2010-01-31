@@ -19,6 +19,7 @@
 ;; concatenate to produce another prime.
 ;;
 ;; Answer: 26033 (8389 6733 5701 5197 13)
+;; Way too slow, about 26 minutes.
 
 
 (load "miller-rabin-primality-test.scm")
@@ -58,8 +59,8 @@
 
   (define (iter candidate ls len iterno)
 
-    (if (zero? (remainder iterno 10000))
-      (format #t "~a ~a ~a\n" candidate ls len))
+;;    (if (zero? (remainder iterno 10000))
+;;      (format #t "~a ~a ~a\n" candidate ls len))
 
     (cond ((zero? len)
            ls)

@@ -25,8 +25,8 @@
 
 
 ;; Concatenate two numbers.
-;; Example
-;; (  concat-numbers 123 456) -> 123456
+;; Example:
+;;   (concat-numbers 123 456) -> 123456
 ;;
 (define (concat-numbers a b)
   (let loop ((m 10))
@@ -44,9 +44,16 @@
 ;;  (p60 9999 5) -> gives problem solution.
 ;;
 (define (p60 max-num len)
+
+  (define (good? a b)
+    (and (prime? (concat-numbers a b))
+         (prime? (concat-numbers b a))))
+
   (define (iter candidate ls len iterno)
+
     (if (zero? (remainder iterno 10000))
       (format #t "~a ~a ~a\n" candidate ls len))
+
     (cond ((zero? len)
            ls)
 
@@ -59,9 +66,7 @@
                    (+ 1 iterno))))
 
           ((prime? candidate)
-           (if (every (lambda (n) (and (prime? (concat-numbers candidate n))
-                                       (prime? (concat-numbers n candidate))))
-                      ls)
+           (if (every (lambda (n) (good? candidate n)) ls)
              (iter (+ 1 candidate)
                    (cons candidate ls)
                    (- len 1)

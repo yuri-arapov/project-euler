@@ -19,7 +19,24 @@
 ;; concatenate to produce another prime.
 ;;
 ;; Answer: 26033 (8389 6733 5701 5197 13)
+;;
 ;; Way too slow, about 26 minutes.
+;;
+;; Primality test memoization may speed the process up:
+;;
+;; * make a bitvector of 2x2xN size, where N is maximum testing number
+;;   (999 for len 4 and 9999 for len 5 problems).
+;;
+;; * the n-th number is represented by 2n and 2n+1 bits in the bitvector.
+;;
+;; * 2n-th bit is #f -- n has not been tested for being a prime yet.
+;;
+;; * 2n-th bit is #t -- n has been tested for being a prime already,
+;;                      2n+1-th bit has to be checked.
+;;
+;; * 2n+1-th bit is #f -- n is not a prime.
+;;
+;; * 2n+1-th bit is #t -- n is a prime.
 
 
 (load "miller-rabin-primality-test.scm")

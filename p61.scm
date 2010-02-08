@@ -54,12 +54,9 @@
   (let loop ((i 1)
              (res '()))
     (let ((x (p-fn i)))
-      (cond ((> x 9999)
-             (reverse res))
-            ((< x 1000)
-             (loop (+ 1 i) res))
-            (else
-              (loop (+ 1 i) (cons x res)))))))
+      (if (> x 9999)
+        (reverse res)
+        (loop (+ 1 i) (if (< x 1000) res (cons x res)))))))
 
 
 ;; Turn list of numbers into bitvector.
@@ -105,6 +102,7 @@
 ;;   (make-plist 12) -> (25 47 75 81 88 96)
 ;;     1225 is p3,
 ;;     1247 is p5,
+;;     1275 is p3,
 ;;     etc.
 ;;
 (define (make-plist xx)

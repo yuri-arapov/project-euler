@@ -27,9 +27,14 @@
 (load "range.scm")
 (load "primes-1000000.scm")
 
+
+;; Sortcut for primality test
+;;
 (define prime? primes-1000000-prime?)
 
 
+;; Split number into factors, bypass duplicated divisors.
+;;
 (define (number->factors n)
 
   (define (divizor? n d) (zero? (remainder n d)))
@@ -64,6 +69,12 @@
                   res)))))
 
 
+;; Compute Euler function.
+;;
+;; See 
+;;   http://ru.wikipedia.org/wiki/Функция_Эйлера
+;;   http://en.wikipedia.org/wiki/Euler's_totient_function
+;;
 (define (phi n)
   (* n
      (apply * (map (lambda (p) (- 1 (/ 1 p)))

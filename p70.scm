@@ -27,7 +27,7 @@
 
 (load "miller-rabin-primality-test.scm")
 (load "range.scm")
-
+(load "uniq.scm")
 
 ;; Turn number into list of digits, lower digits first.
 ;;
@@ -71,22 +71,6 @@
            (loop (quotient n p) p (cons p res)))
           (else
             (loop n (if (= p 2) 3 (+ p 2)) res)))))
-
-
-;; Remove duplicated consecutive elements from the list.
-;; FOR DEBUGGING
-;;
-(define (uniq s)
-  (if (null? s)
-    s
-    (let loop ((s (cdr s))
-               (res (list (car s))))
-      (cond ((null? s)
-             (reverse res))
-            ((= (car s) (car res))
-             (loop (cdr s) res))
-            (else
-              (loop (cdr s) (cons (car s) res)))))))
 
 
 ;; Phi (Euler) function.

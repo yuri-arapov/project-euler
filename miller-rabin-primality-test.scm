@@ -3,6 +3,14 @@
 ;; A rather fast O(log² n) probabilistic algorithm for checking number's
 ;; primality. This is a slight modification to Fermat's primality test that
 ;; cannot be tricked with Carmichael's numbers, making it even more precise.
+;;
+;; IMPORTANT:
+;;   The 294409 410041 512461 numbers are not prime but [sometimes] reported 
+;;   as primes erroneously.
+;;   Discovered when solving problem 72 and comparing list of primes
+;;   under 1000000 determined by Miller-Rabin primality test and
+;;   list of primes downlowaded from 
+;;   http://primes.utm.edu/lists/small/millions/
 
 ;Returns (a ^ p) mod n
 (define (expmod a p n)

@@ -6,14 +6,11 @@
 (define (uniq s)
   (if (null? s)
     s
-    (let loop ((s (cdr s))
+    (let loop ((s   (cdr s))
                (res (list (car s))))
-      (cond ((null? s)
-             (reverse res))
-            ((= (car s) (car res))
-             (loop (cdr s) res))
-            (else
-              (loop (cdr s) (cons (car s) res)))))))
+      (cond ((null? s)                  (reverse res))
+            ((= (car s) (car res))      (loop (cdr s) res))
+            (else                       (loop (cdr s) (cons (car s) res)))))))
 
 
 ;; Alias for uniq

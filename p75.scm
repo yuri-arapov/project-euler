@@ -67,7 +67,7 @@
 
     (let loop ((m 2)
                (n 1)
-               (count 0))           ;; count triangles made for given n
+               (count 0))           ;; number of triangles made for given n
 
       (let* ((abc (make-pt m n))    ;; a b and c sides
              (l   (apply + abc)))   ;; length of triangle

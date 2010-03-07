@@ -27,7 +27,7 @@
 ;; As...'), a 31K text file containing a 80 by 80 matrix, from the left column
 ;; to the right column.
 ;;
-;; Answer: ???
+;; Answer: 260324
 
 
 ;; Cell constructor and accessors.

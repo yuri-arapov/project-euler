@@ -27,7 +27,7 @@
 ;;
 ;; Answer: 427337
 ;;
-;; TODO: make generic memoization of function calls (see SICP).
+;; TODO: make generic memorization of function calls (see SICP).
 
 
 

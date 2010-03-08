@@ -30,6 +30,9 @@
 ;; Answer: 260324
 
 
+(load "timed-func.scm")
+
+
 ;; Cell constructor and accessors.
 ;;
 (define (make-cell r c) (cons r c))
@@ -103,23 +106,31 @@
 ;;   (delete-duplicates (append s1 s2))
 ;; assuming that there're no duplicates in s1 and s2.
 ;;
-(define (join s1 s2)
-  (cond ((null? s2) s1)
-        ((null? s1) s2)
-        (else
-          (join (if (member (car s2) s1)
-                  s1
-                  (cons (car s2) s1))
-                (cdr s2)))))
+(define join
+  (make-timed-func 
+    "join"
+    (lambda (s1 s2)
+      (cond ((null? s2) s1)
+            ((null? s1) s2)
+            (else
+              (join (if (member (car s2) s1)
+                      s1
+                      (cons (car s2) s1))
+                    (cdr s2)))))))
 
 
 ;; Find the shortest way between north-west and south-east corners of the
-;; matrix assuming that we may go north, east, south, or west from any given
+;; matrix assuming that we may go north, east, or south from any given
 ;; cell.
 ;;
 ;; See http://en.wikipedia.org/wiki/Dijkstra's_algorithm
 ;;
-(define (find-shortest-path data initial-row)
+;; The code has been copypasted from p83.scm; the difference is that (1)
+;; initial seed is not single node but leftmost column (aka "west border") and
+;; (2) stop criterion is when we reach rightmost column (aka "east border"),
+;; not bottom-right node.
+;;
+(define (find-shortest-path data)
 
   (define (data-ref cell) (cell-matrix-ref data cell))
 
@@ -131,6 +142,8 @@
     (define north-west (make-cell 0 0))
     (define south-east (make-cell max-row max-col))
 
+    (define (east-border? cell) (= (cell-c cell) max-col))
+
     (define (good-cell? cell) (and (<= 0 (cell-r cell) max-row)
                                    (<= 0 (cell-c cell) max-col)))
 
@@ -139,33 +152,34 @@
     (define (path-set! cell val)(cell-matrix-set! path cell val))
 
     (define  solved             (make-matrix (1+ max-row) (1+ max-col) #f))
-    (define (solved? cell)      (cell-matrix-ref solved  cell))
+    (define (solved?     cell)  (cell-matrix-ref  solved cell))
     (define (solved-set! cell)  (cell-matrix-set! solved cell #t))
 
     (define max-working-cells 0)
 
-    (define (find-best-cell cells)
-      (set! max-working-cells (max max-working-cells (length cells)))
-      (let loop ((s   (cdr cells))
-                 (res (car cells)))
-        (if (null? s)
-          res
-          (loop (cdr s)
-                (if (< (path-ref (car s)) (path-ref res))
-                  (car s)
-                  res)))))
-
-    (define (res)
-      (apply min
-             (map (lambda (r) (matrix-ref path r max-col))
-                  (iota (1+ max-row)))))
+    ;; FIXME: Bottleneck is here!
+    ;;
+    (define find-best-cell 
+      (make-timed-func 
+        "find-best-cell"
+        (lambda (cells)
+          (set! max-working-cells (max max-working-cells (length cells)))
+          (let loop ((s   (cdr cells))
+                     (res (car cells)))
+            (if (null? s)
+              res
+              (loop (cdr s)
+                    (if (< (path-ref (car s)) (path-ref res))
+                      (car s)
+                      res)))))))
 
     (define (iter working-cells)
-      (if (null? working-cells)
-        (begin
-          (format #t "debug: max length of cells list: ~a\n" max-working-cells)
-          (res))
-        (let ((cell (find-best-cell working-cells)))
+      (let ((cell (find-best-cell working-cells)))
+        (if (east-border? cell)
+          (begin
+            (format #t "(~a) ~a\n" max-working-cells (path-ref cell))
+            (for-each (lambda (p) (p 'report-time)) (list find-best-cell join))
+            (path-ref cell))
           (let ((neighbours 
                   (filter (lambda (c) (and (good-cell? c) (not (solved? c))))
                           (map (lambda (dir) (cell-move cell dir))
@@ -178,17 +192,16 @@
             (solved-set! cell)
             (iter (join (delete cell working-cells) neighbours))))))
 
-    ;; seed initial node
-    (let ((c (make-cell initial-row 0)))
-      (path-set! c (data-ref c))
-      (iter (list c)))))
+    ;; seed initial nodes
+    (let ((west-border (map (lambda (r) (make-cell r 0))
+                            (iota (matrix-rows data)))))
+      (for-each (lambda (c) (path-set! c (data-ref c))) west-border)
+      (iter west-border))))
       
 
 (define (p82-file file)
   (let ((data (read-matrix file)))
-    (apply min
-           (map (lambda (r) (find-shortest-path data r))
-                (iota (matrix-rows data))))))
+    (find-shortest-path data)))
 
 
 (define (p82)

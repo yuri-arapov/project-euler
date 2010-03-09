@@ -20,7 +20,7 @@
 ;;
 ;; Answer: 26033 (8389 6733 5701 5197 13)
 ;;
-;; Primality test memoization may speed the process up:
+;; Primality test memorization may speed the process up:
 ;; two bitvectors of N^2 size (where N is maximum testing number
 ;; 1000 for len 4 and 10000 for len 5 problems), first bitvector
 ;; is to check that n-th number has been already tested for being

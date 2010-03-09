@@ -22,7 +22,7 @@
 ;;
 ;; Answer: 71
 ;;
-;; NOTE: memoization may speedup the computation.
+;; NOTE: memorization may speedup the computation.
 ;;
 ;; NOTE: this is recursive code, stack overflow is our friend here;
 ;;

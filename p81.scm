@@ -110,9 +110,9 @@
 
   (define memo  (make-matrix (+ max-row 2) (+ max-col 2) #f))
 
-  (define (memoized r c) (matrix-ref memo r c))
+  (define (memorized r c) (matrix-ref memo r c))
 
-  (define (memoize r c val) (matrix-set! memo r c val))
+  (define (memorize r c val) (matrix-set! memo r c val))
 
   (define (iter stack)
     (if (null? stack)
@@ -120,25 +120,25 @@
       (let* ((top (car stack))
              (r   (first top))
              (c   (second top)))
-        (if (memoized r c)
+        (if (memorized r c)
           (iter (cdr stack))
           (cond ((and (= r max-row) (= c max-col))
-                 (memoize r c (data r c))
+                 (memorize r c (data r c))
                  (iter (cdr stack)))
 
                 ((or (> r max-row) (> c max-col))
-                 (memoize r c gugol)
+                 (memorize r c gugol)
                  (iter (cdr stack)))
 
-                ((and (memoized r (+ c 1)) (memoized (+ r 1) c))
-                 (memoize r c (+ (data r c) (min (memoized r (+ c 1))
-                                                 (memoized (+ r 1) c))))
+                ((and (memorized r (+ c 1)) (memorized (+ r 1) c))
+                 (memorize r c (+ (data r c) (min (memorized r (+ c 1))
+                                                 (memorized (+ r 1) c))))
                  (iter (cdr stack)))
 
-                ((and (memoized r (+ c 1)) (not (memoized (+ r 1) c)))
+                ((and (memorized r (+ c 1)) (not (memorized (+ r 1) c)))
                  (iter (cons (list (+ r 1) c) stack)))
 
-                ((and (not (memoized r (+ c 1))) (memoized (+ r 1) c))
+                ((and (not (memorized r (+ c 1))) (memorized (+ r 1) c))
                  (iter (cons (list r (+ c 1)) stack)))
 
                 (else

@@ -150,7 +150,7 @@
                              (partition memo-ref all)                           ; unknown ones
 
                       (cond ((null? unknown)                                    ; all the cell known:
-                             (memo-set! cell                                    ; compute and memoize
+                             (memo-set! cell                                    ; compute and memorize
                                         (+ (data-ref cell)                      ; value of given cell;
                                            (apply min (map memo-ref known))))   ;
                              (shift-format stack)

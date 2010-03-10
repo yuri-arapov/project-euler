@@ -23,7 +23,7 @@
 ;;
 ;; Answer: 5482660
 ;;
-;; FIXME: Bruteforce with some memorization.  Quite slow.
+;; FIXME: Bruteforce with some memoization.  Quite slow.
 
 
 (load "range.scm")

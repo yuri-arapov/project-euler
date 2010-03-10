@@ -67,7 +67,7 @@
     bv))
 
 
-;; Memorize each of polygonal number in certain bitvector.
+;; Memoize each of polygonal number in certain bitvector.
 ;;
 (define p3-bv (numbers->bitvector 9999 (gen-4digit-p-numbers p3)))
 (define p4-bv (numbers->bitvector 9999 (gen-4digit-p-numbers p4)))

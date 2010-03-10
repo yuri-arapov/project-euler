@@ -22,7 +22,7 @@
 
 
 ;;
-;; Key method: memorization.
+;; Key method: memoization.
 ;;
 ;; IMPORTANT: (make-vector n (make-vector n)) DOES NOT WORK, because
 ;; IMPORTANT: it's not vector of DIFFERENT vectors, it's a vector
@@ -43,7 +43,7 @@
 
 (define (p n)
 
-  ;; memorization table
+  ;; memoization table
   (define pp-tab (list->vector (map (lambda (i) (make-vector (+ n 1) #f)) (make-list (+ n 1)))))
   ;;                                                                      ^^^^^^^^^^^^^^^^^^^
   ;;                                                                      Make a list on n+1 size,
@@ -79,7 +79,7 @@
                   pp-val))))))
 
   (let ((res (pp 1 n)))
-    ;; print memorization table
+    ;; print memoization table
     (for-each (lambda (v) (format #t "~a\n" v)) (vector->list pp-tab))
     (- res 1)))
 

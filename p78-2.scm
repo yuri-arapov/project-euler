@@ -52,7 +52,7 @@
 (define (sign i) (if (odd? (quotient (1+ i) 2)) 1 -1))
 
 
-;; Memorization gizmo.
+;; Memoization gizmo.
 ;;
 (define  memo             (make-vector 1000000 0))
 (define (memo-ref  n)     (vector-ref  memo n))

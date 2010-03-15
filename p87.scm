@@ -30,7 +30,7 @@
 (define primes primes-1000000)  ;; shortcut
 
 
-;; Transform initial sequence with given fun until resultant elements do no
+;; Transform initial sequence with given fun until resultant elements do not
 ;; exceed given limit.
 ;;
 (define (make-list-limited src fun limit)
@@ -64,6 +64,7 @@
     (for-each (lambda (s)
                 (format #t "~a ... ~a\n" (length s) (take-right s 5)))
               (list ps2 ps3 ps4))
+
     (let loop ((s2 ps2)
                (s3 ps3)
                (s4 ps4)

@@ -38,6 +38,13 @@
 ;; Answer: 743
 
 
+;; Check if sequence pref is a prefix of sequence s.
+;; Return subsequence of s that follows the perefix or #f if
+;; pref is not a prefix.
+;; Example:
+;;   (prefix? '(1 2 3) '(1 2 3 4)) -> (4)
+;;   (prefix? '(1 2 3) '(4 5 6))   -> #f
+;;   
 (define (prefix? pref s)
   (cond
     ((null? pref) s)
@@ -47,15 +54,23 @@
       (prefix? (cdr pref) (cdr s)))))
 
 
-(define (first-match pred s data)
+;; Apply pred function on elements of sequence s and return
+;; first successful result.
+;; Return #f in case of no success.
+;;
+(define (first-match pred s)
   (if (null? s)
     #f
-    (let ((res (pred (car s) data)))
+    (let ((res (pred (car s))))
       (if res
         res
-        (first-match pred (cdr s) data)))))
+        (first-match pred (cdr s))))))
 
 
+;; Roman numbers.
+;; IMPORTANT: Order does matter, the greater romans must go first,
+;; IMPORTANT: so the roman->number function would work correctly.
+;;
 (define romans
   (list (cons 1000  "M")
         (cons  900 "CM")
@@ -72,6 +87,10 @@
         (cons    1  "I")))
 
 
+;; Convert roman number (string) into number.
+;; NOTE: Descending order of the roman number components is
+;; NOTE: not verified.
+;;
 (define (roman->number s)
   (let ((r (map (lambda (i) 
                   (cons (car i) 
@@ -82,20 +101,21 @@
       (if (null? s)
         n
         (let ((next (first-match 
-                      (lambda (x s)
+                      (lambda (x)
                         (let ((rn (car x))
                               (rs (cdr x)))
                           (let ((p (prefix? rs s)))
                             (if p
                               (cons p rn)
                               #f))))
-                      r 
-                      s)))
+                      r)))
           (if next
             (loop (car next) (+ n (cdr next)))
             (error "roman->number error:" (list->string s))))))))
 
 
+;; Convert number into roman (string).
+;;
 (define (number->roman n)
   (let loop ((n n)
              (r romans)
@@ -109,6 +129,8 @@
           (loop n (cdr r) res))))))
 
 
+;; Read roman numbers (one string per line) from file.
+;;
 (define (read-romans file)
   (define (read-lines port)
     (let loop ((res '()))
@@ -119,6 +141,8 @@
   (call-with-input-file file read-lines))
 
 
+;; Solve problem 89.
+;;
 (define (p89)
   (let* ((a (read-romans "roman.txt"))
          (b (map (lambda (i)

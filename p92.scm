@@ -23,8 +23,9 @@
 ;;
 ;; How many starting numbers below ten million will arrive at 89?
 ;;
-;; Answer: ???
+;; Answer: 8581146
 ;;
+;; FIXME: bruteforce
 
 
 (define (number->digits n)

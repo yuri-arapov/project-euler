@@ -1,0 +1,93 @@
+;; guile rc file
+
+;; activate readline support
+(use-modules (ice-9 readline))
+(activate-readline)
+
+
+;; pretty printing is on now
+(use-modules (ice-9 pretty-print))
+
+
+;; MIT Scheme compatibility
+(define quick-sort sort-list)
+
+
+(use-modules (srfi srfi-1))
+
+
+(define true #t)
+
+(define false #f)
+
+
+(use-syntax (ice-9 syncase))
+
+;; read-line
+(use-modules (ice-9 rdelim))
+
+
+;; time/date
+(use-modules (srfi srfi-19))
+
+
+;; formatted output
+(use-modules (ice-9 format))
+
+
+;; when special form
+;;
+;; (when test body...)
+;;
+;; equivalent of (if test (begin body...))
+;;
+;; example:
+;;   (when (odd? some-number) 
+;;     (display some-number) 
+;;     (display " is odd number")
+;;     (newline))
+;;
+(define-syntax when 
+  (syntax-rules ()
+    ((when)
+     (error "bad WHEN syntax: (WHEN TEST [BODY...]) expected"))
+
+    ((when test)
+     test)
+
+    ((when test body ...)
+     (if test (begin body ...)))))
+
+
+;; 'unless' special form.
+;; Opposite of 'when'.
+(define-syntax unless
+  (syntax-rules ()
+    ((unless)
+     (error "bad UNLESS syntax: (UNLESS TEST [BODY...]) expected"))
+
+    ((unless test)
+     test)
+
+    ((unless test body ...)
+     (if (not test) (begin body ...)))))
+
+
+;; Increment value conditionally.
+;;
+(define-syntax cond-inc
+  (syntax-rules ()
+    ((cond-inc condition value increment)
+     (if condition (+ value increment) value))
+
+    ((cond-inc condition value)
+     (cond-inc condition value 1))
+
+    ((cond-inc condition)
+     (cond-inc condition 0 1))
+
+    ((cond-inc)
+     (error "bad COND-INC syntax: (COND-INC CONDITION [VALUE [INCREMENT]]) expected"))))
+
+;; end of file
+;; vim: set filetype=scheme :

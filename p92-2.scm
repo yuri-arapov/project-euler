@@ -49,11 +49,6 @@
             (+ s ((lambda (x) (* x x)) (remainder n 10)))))))
 
 
-;; Increment value conditionally
-;;
-(define (cond-inc c val) (if c (1+ val) val))
-
-
 ;; Problem 92 (user-defined limit)
 ;;
 (define (p92- limit)

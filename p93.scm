@@ -175,7 +175,7 @@
       (loop (1+ n) (cdr s)))))
 
 
-;; All possible combinations of 3 operations.
+;; All possible combinations of 4 operations by 3.
 ;;
 (define *ops (full-combinations (list add sub mul div) 3))
 

@@ -196,9 +196,10 @@
     (uniq
       (sort 
         (filter (lambda (n) (and (integer? n) (positive? n)))
-                (each-to-each *c-funcs 
-                              (permutations octet) 
-                              (lambda (c o) (apply c o))))
+                (each-to-each 
+                  (lambda (c o) (apply c o))
+                  *c-funcs 
+                  (permutations octet))
         <))))
 
 

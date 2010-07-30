@@ -50,6 +50,7 @@
 ;;                      
 
 
+;; Guile specific.
 (use-modules (srfi srfi-11)) ;; (let-values ...)
 
 
@@ -197,19 +198,16 @@
   ;; Read board from the file.
   ;; Return (values name board) or #f.
   (define (read-board port)
-
     ;; Turn list of lines into board.
     (define (lines->board lines)
       (make-board
         (map (lambda (c)
                (- (char->integer c) 48))
              (string->list (string-concatenate lines)))))
-
     ;; Turn 10 lines into (values name board).
     (define (make-res lines)
       (values (car lines)
               (lines->board (cdr lines))))
-
     ;; Reading loop.
     (let loop ((lines '()))
       (if (= 10 (length lines))
@@ -228,17 +226,18 @@
   (define (read-and-solve port)
     (let loop ((sum 0))
       (let-values (((board-name board) (read-board port)))
-         (if (not board)
-           sum
-           (begin
-             (format #t "~a\n" board-name)
-             (let ((solved-board (solve-sudoku board)))
-               (if solved-board
-                 (let ((x (left-top-number solved-board)))
-                   (print-boards board solved-board)
-                   (format #t "~a\n\n" x)
-                   (loop (+ sum x)))
-                 #f)))))))
+        (cond 
+          ((not board)
+           sum)
+          (else
+            (format #t "~a\n" board-name)
+            (or
+              (and-let* ((solved-board (solve-sudoku board))
+                         (x            (left-top-number solved-board)))
+                (print-boards board solved-board)
+                (format #t "~a\n\n" x)
+                (loop (+ sum x)))
+              #f))))))
 
   (call-with-input-file file read-and-solve))
 

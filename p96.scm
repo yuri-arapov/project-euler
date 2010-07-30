@@ -61,17 +61,21 @@
 ;; Shuffle list elements
 ;;
 (define (shuffle ls)
+  (define (set-two v i vi j vj)
+    (vector-set! v i vi)
+    (vector-set! v j vj)
+    v)
+  (define (swap v i j)
+    (set-two v
+             j (vector-ref v i)
+             i (vector-ref v j)))
   (define (shuffle-vector v)
     (let ((n (vector-length v)))
-      (let loop ((i 0))
+      (let loop ((i 0) (v v))
         (if (= i n)
           v
-          (let* ((x (random n))
-                 (y (random n))
-                 (vx (vector-ref v x)))
-            (vector-set! v x (vector-ref v y))
-            (vector-set! v y vx)
-            (loop (1+ i)))))))
+          (loop (1+ i) 
+                (swap v (random n) (random n)))))))
   (vector->list (shuffle-vector (list->vector ls))))
 
 

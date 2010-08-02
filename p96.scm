@@ -235,13 +235,11 @@
            sum)
           (else
             (format #t "~a\n" board-name)
-            (or
-              (and-let* ((solved-board (solve-sudoku board))
-                         (x            (left-top-number solved-board)))
-                (print-boards board solved-board)
-                (format #t "~a\n\n" x)
-                (loop (+ sum x)))
-              #f))))))
+            (and-let* ((solved-board (solve-sudoku board))
+                       (x            (left-top-number solved-board)))
+              (print-boards board solved-board)
+              (format #t "~a\n\n" x)
+              (loop (+ sum x))))))))
 
   (call-with-input-file file read-and-solve))
 

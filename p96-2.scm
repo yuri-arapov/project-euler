@@ -67,7 +67,6 @@
 ;; Position <-> plain index.
 ;;
 (define (pos->index pos)    (+ (* 9 (row pos)) (col pos)))
-(define (index->pos index)  (make-pos (quotient index 9) (remainder index 9)))
 
 
 ;; Product of indicies -> list of positions.
@@ -112,6 +111,10 @@
 ;; List of ints -> board.
 ;;
 (define (make-board ls) 
+
+  ;; Fist make a board without candidates.
+  ;; Then map this board to make list of candidates for each cell.
+
   (let ((board (list->vector 
                  (map (lambda (n) (make-cell n '())) 
                       ls))))
@@ -227,6 +230,7 @@
 
 
 ;; Test board.
+;; Usage: (test) or (solve-sudoku (test-board))
 ;;
 (define (test-board)
   (make-board '(
@@ -245,6 +249,7 @@
 
 
 ;; Another test board.
+;; Usage: (solve-sudoku (test-board2))
 ;;
 (define (test-board2)
   (make-board '(

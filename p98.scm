@@ -32,7 +32,7 @@
 
 (load "integer-square-root.scm")
 (load "read-file.scm")
-
+(load "number-digits.scm")
 
 
 ;; Make a key out of a word.
@@ -75,33 +75,13 @@
   (let ((from   (expt 10 (1- n)))
         (to     (1- (expt 10 n))))
 
-    (let loop ((x   (integer-square-root from))
+    (let loop ((x   (integer-square-root from)) ;; x^2 <= from < (x+1)^2
                (res '()))
       (let ((xx (* x x)))
         (cond
           ((> xx to)        (reverse res))
           ((<= from xx to)  (loop (1+ x) (cons xx res)))
           (else             (loop (1+ x) res)))))))
-
-
-
-;; Turn number into list of digits:
-;;   (number->digits 123) -> (1 2 3)
-;;
-(define (number->digits n)
-  (let loop ((n n)
-             (res '()))
-    (if (zero? n)
-      res
-      (loop (quotient n 10) (cons (remainder n 10) res)))))
-
-
-
-;; Turn list of digits into number:
-;;   (digits->number '(1 2 3)) -> 123
-;;
-(define (digits->number ds)
-  (fold (lambda (d res) (+ (* res 10) d)) 0 ds))
 
 
 

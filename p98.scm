@@ -92,7 +92,7 @@
 
 
 
-;; Return list of digits ordered sama way as sorted list of chars:
+;; Return list of digits ordered same way as sorted list of chars:
 ;;  (reorder-digits 
 ;;    (string->list "hello") 
 ;;    (number->digits 12345)) -> (2 1 3 4 5)
@@ -106,8 +106,8 @@
 
 
 
-;; Take anagram -- words a1, and a2 -- and suare number s1,
-;; put digist of s1 at the same positions as characters of a2 and
+;; Take anagram -- words a1, and a2 -- and square number s1,
+;; put digits of s1 at the same positions as characters of a2 and
 ;; so make another number:
 ;;   (anagram-pair->2nd-square "CARE" "RACE" 1296) -> 9216
 ;;
@@ -177,7 +177,7 @@
          ;; filter out non-anagrams
          (i (filter (lambda (x) (> (length x) 1)) f))
 
-         ;; sort anagrams to bring the longest at the beginning
+         ;; sort anagrams to bring the longest ones at the beginning
          (k (sort i (lambda (a b) (> (string-length (car a))
                                      (string-length (car b)))))))
 
@@ -191,8 +191,8 @@
                  (integer-square-root res-square)))
 
         (else
-          (let* ((anagram (car anagrams))
-                 (x (fold (lambda (s1 res)
+          (let* ((anagram (car anagrams))   ;; current anagram
+                 (x (fold (lambda (s1 res)  ;; and its max square number
                             (or 
                               (and-let* (
                                 ((same-char-same-digit? (first anagram) s1))

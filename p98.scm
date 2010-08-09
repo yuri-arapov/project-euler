@@ -31,19 +31,7 @@
 
 
 (load "integer-square-root.scm")
-
-
-
-;; Read words (lines) from file.
-;;
-(define (read-words file)
-  (define (read-words port)
-    (let loop ((line (read-line port))
-               (res '()))
-      (if (eof-object? line)
-        (reverse res)
-        (loop (read-line port) (cons line res)))))
-  (call-with-input-file file read-words))
+(load "read-file.scm")
 
 
 
@@ -194,7 +182,7 @@
 (define (p98)
   (let* (
          ;; words from file
-         (x (read-words "words"))
+         (x (read-file "words"))
 
          ;; words -> (key . word) pairs
          (y (map (lambda (s) (cons (word->key s) s))

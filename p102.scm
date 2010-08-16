@@ -4,7 +4,7 @@
 ;; 
 ;; Project Euler
 ;; 
-;; http://projecteuler.net/index.php?section=problems&id=101
+;; http://projecteuler.net/index.php?section=problems&id=102
 ;;
 ;; Problem 102
 ;; 12 August 2005

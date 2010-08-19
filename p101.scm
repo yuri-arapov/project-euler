@@ -69,10 +69,12 @@
 ;;   P(3) -> (polynomial '(1 1 3 -7) 3) -> -158
 ;;
 (define (polynomial factors x)
-  (apply +
-         (map (lambda (f degree) (* f (integer-expt x degree)))
-              factors
-              (iota (length factors)))))
+  (let loop ((xx  1)
+             (f   factors)
+             (res 0))
+    (if (null? f)
+      res
+      (loop (* xx x) (cdr f) (+ res (* (car f) xx))))))
 
 
 ;; The u(n) function.

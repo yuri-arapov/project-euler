@@ -39,10 +39,10 @@
 (define (print s) (for-each (lambda (i) (format #t "~a\n" i)) s))
 
 
-;; Return list of all possible combinations of the elements from s.
-;; (all-combinations '(1 2 3)) -> ((1) (2) (3) (1 2) (1 3) (2 3) (1 2 3))
+;; Return list of all possible subsets of set s.
+;; (all-subsets '(1 2 3)) -> ((1) (2) (3) (1 2) (1 3) (2 3) (1 2 3))
 ;;
-(define (all-combinations s)
+(define (all-subsets s)
   (let loop ((n 1)
              (res '()))
     (let ((c (combinations s n)))
@@ -73,7 +73,7 @@
         (map
           (lambda (subset)
             (list (list first) subset))
-          (all-combinations rest))))))
+          (all-subsets rest))))))
 
 
 

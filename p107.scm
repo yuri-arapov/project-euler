@@ -13,7 +13,7 @@
 ;; with a total weight of 243.
 ;;
 ;; The same network can be represented by the matrix below.
-;;      A   B   C   D   E   F   G
+;;          A   B   C   D   E   F   G
 ;;      A   -   16  12  21  -   -   -
 ;;      B   16  -   -   17  20  -   -
 ;;      C   12  -   -   28  -   31  -

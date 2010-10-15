@@ -124,9 +124,12 @@
         ((= col size)   (loop (+ row 1) (+ row 2) res))
         (else
           (let ((dist (matrix-ref dm row col)))
-            (if (not dist)
-              (loop row (1+ col) res)
-              (loop row (1+ col) (cons (make-edge dist row col) res)))))))))
+            (loop
+              row
+              (1+ col)
+              (if dist
+                (cons (make-edge dist row col) res)
+                res))))))))
 
 
 

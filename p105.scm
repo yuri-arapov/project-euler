@@ -131,5 +131,25 @@
             (+ sum (set-sum (car sets)))
             sum))))))
 
+
+(define (f1 s)
+  (filter 
+    (lambda (x)
+      (and (< 1 (length (car x)))
+           (= (length (car x)) (length (cadr x)))))
+    (disjoint-subsets s)))
+
+
+(define (f2 s1 s2)
+  (let ((f1 (first s1))
+        (l1 (last s1))
+        (f2 (first s2))
+        (l2 (last s2)))
+    (or
+      (< f1 f2 l2 l1)
+      (< f2 f1 l1 l2))))
+
+
+
 ;; end of file
 ;; vim: ts=4 sw=4

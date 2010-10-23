@@ -85,6 +85,8 @@
 
 ;; Make list of all possible pairs made of elements of list s.
 ;; Example:
+;;   (make-all-pairs '(1)) -> ((1 1))
+;;   (make-all-pairs '(1 2)) -> ((2 2) (1 1) (1 2))
 ;;   (make-all-pairs '(1 2 3)) -> ((3 3) (2 2) (2 3) (1 1) (1 2) (1 3))
 (define (make-all-pairs s)
   (let loop ((s s)

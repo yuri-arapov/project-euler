@@ -29,7 +29,7 @@
 ;;   http://mathworld.wolfram.com/FibonacciNumber.html
 
 
-(defun p1 ()
+(defun p2 ()
   (defun iter (a b acc)
     (if (> b 4000000)
       acc

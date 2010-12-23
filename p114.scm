@@ -61,5 +61,7 @@
     (helper n)))
 
 
+(define (p114) (p114-int 50))
+
 ;; end of file
 ;; vim: ts=4 sw=4 et

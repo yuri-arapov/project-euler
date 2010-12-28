@@ -30,33 +30,31 @@
 ;;  
 ;;
 
+(load "memo.scm")
+
 (define (fill-count m n)
 
-  (let ((memo (make-vector (1+ n) #f)))
+  (define helper2 (make-memoized-proc =
+    (lambda (n)
+      (let loop ((left 0)
+                 (len  m)
+                 (acc  0))
+        (cond 
+          ((> (+ left len) n) (loop 0 (1+ len) acc))
+          ((= len n)          (+ 2 acc))
+          (else
+            (loop 
+              (1+ left)
+              len
+              (+ acc (max 1 (helper (- n (+ left len 1))))))))))))
 
-    (define (memo-ref n)   (vector-ref  memo n))
-    (define (memo-set n x) (vector-set! memo n x) x)
+  (define (helper n)
+    (cond 
+      ((< n m) 0)   ;; nothing
+      ((= n m) 2)   ;; xxx and ooo
+      (else    (helper2 n))))
 
-    (define (helper n)
-      (cond 
-        ((< n m) 0)   ;; nothing
-        ((= n m) 2)   ;; xxx and ooo
-        (else
-          (or (memo-ref n)
-              (memo-set 
-                n 
-                (let loop ((left 0)
-                           (len  m)
-                           (acc  0))
-                  (cond 
-                    ((> (+ left len) n) (loop 0 (1+ len) acc))
-                    ((= len n)          (+ 2 acc))
-                    (else
-                      (loop 
-                        (1+ left)
-                        len
-                        (+ acc (max 1 (helper (- n (+ left len 1))))))))))))))
-    (helper n)))
+  (helper n))
 
 
 (define (upper-bound m count)

@@ -34,25 +34,21 @@
 ;; Answer: 20492570929
 
 
+(load "memo.scm")
+
+
 (define (fill-count color-len black-len)
 
-  (let ((memo (make-vector (1+ black-len) #f)))
+  (define helper (make-memoized-proc =
+    (lambda (len)
+      (let loop ((left 0)
+                 (acc  0))
+        (if (> (+ left color-len) len)
+          acc
+          (let ((x (helper (- len (+ left color-len)))))
+            (loop (1+ left) (+ acc (if (zero? x) 1 (1+ x))))))))))
 
-    (define (memo-ref len) (vector-ref memo len))
-    (define (memo-set! len x) (vector-set! memo len x) x)
-
-    (define (helper len)
-      (or (memo-ref len)
-          (memo-set! 
-            len
-            (let loop ((left 0)
-                       (acc  0))
-              (if (> (+ left color-len) len)
-                acc
-                (let ((x (helper (- len (+ left color-len)))))
-                  (loop (1+ left) (+ acc (if (zero? x) 1 (1+ x))))))))))
-
-    (helper black-len)))
+    (helper black-len))
 
 
 (define (p116)

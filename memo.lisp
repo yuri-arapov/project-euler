@@ -5,12 +5,8 @@
   (let ((proc proc)
         (ht   (make-hash-table)))
     (lambda (key)
-      (let ((v (gethash key ht)))
-        (if v
-          v
-          (let ((v (funcall proc key)))
-            (setf (gethash key ht) v)
-            v))))))
+      (or (gethash key ht)
+          (setf (gethash key ht) (funcall proc key))))))
 
 
 ;; end of file

@@ -32,32 +32,34 @@
 ;;
 
 
+(load "memo.lisp")
+
+
 (defun p114-int (n)
 
-  (let ((memo (make-array (1+ n) :initial-element nil)))
+  (let ((helper1 nil)
+        (helper2 nil))
 
-    (defun memo-ref (n)   (aref memo n))
-    (defun memo-set (n x) (setf (aref memo n) x) x)
+    (setf helper1
+          (lambda (n) 
+            (cond ((< n 3) 0)
+                  ((= n 3) 2)
+                  (t       (funcall helper2 n)))))
 
-    (defun helper (n)
-      (cond 
-        ((< n 3) 0)   ;; nothing
-        ((= n 3) 2)   ;; xxx and ooo
-        (t
-          (or (memo-ref n)
-              (memo-set 
-                n 
-                (labels ((iter (left len acc)
-                               (cond 
-                                 ((> (+ left len) n) (iter 0 (1+ len) acc))
-                                 ((= len n)          (+ 2 acc))
-                                 (t
-                                   (iter
-                                     (1+ left)
-                                     len
-                                     (+ acc (max 1 (helper (- n (+ left len 1))))))))))
-                  (iter 0 3 0)))))))
-    (helper n)))
+    (setf helper2 (make-memoized-proc
+          (lambda (n)
+            (labels ((iter (left len acc)
+                           (cond 
+                             ((> (+ left len) n) (iter 0 (1+ len) acc))
+                             ((= len n)          (+ 2 acc))
+                             (t
+                               (iter
+                                 (1+ left)
+                                 len
+                                 (+ acc (max 1 (funcall helper1 (- n (+ left len 1))))))))))
+              (iter 0 3 0)))))
+
+    (funcall helper1 n)))
 
 
 (defun p114 () (p114-int 50))

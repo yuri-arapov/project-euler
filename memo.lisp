@@ -4,7 +4,7 @@
 (defun make-memoized-proc (proc)
   (let ((proc proc)
         (ht   (make-hash-table)))
-    (lambda (key)
+    #'(lambda (key)
       (or (gethash key ht)
           (setf (gethash key ht) (funcall proc key))))))
 

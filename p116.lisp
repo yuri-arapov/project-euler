@@ -34,25 +34,21 @@
 ;; Answer: 20492570929
 
 
+(load "memo.lisp")
+
+
 (defun fill-count (color-len black-len)
 
-  (let ((memo (make-array (1+ black-len) :initial-element nil)))
-
-    (defun memo-ref  (len)   (aref memo len))
-    (defun memo-set! (len x) (setf (aref memo len) x) x)
-
-    (defun helper (len)
-      (or (memo-ref len)
-          (memo-set! 
-            len
-            (labels ((iter (left acc)
-                           (if (> (+ left color-len) len)
-                             acc
-                             (let ((x (helper (- len (+ left color-len)))))
-                               (iter (1+ left) (+ acc (if (zerop x) 1 (1+ x))))))))
-              (iter 0 0)))))
-
-    (helper black-len)))
+  (let ((helper nil))
+    (setf helper (make-memoized-proc
+                   (lambda (len)
+                     (labels ((iter (left acc)
+                                    (if (> (+ left color-len) len)
+                                      acc
+                                      (let ((x (funcall helper (- len (+ left color-len)))))
+                                        (iter (1+ left) (+ acc (if (zerop x) 1 (1+ x))))))))
+                       (iter 0 0)))))
+    (funcall helper black-len)))
 
 
 (defun p116 ()

@@ -200,7 +200,7 @@
                   (lambda (c o) (apply c o))
                   *c-funcs 
                   (permutations octet))
-        <))))
+        <)))))
 
 
 (define (p93)

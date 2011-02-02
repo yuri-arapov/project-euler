@@ -57,7 +57,7 @@
 ;; True if n is a power of sum of its digits:
 ;;                    p
 ;;   abc = (a + b + c)
-(define (wierd-number? n)
+(define (weird-number? n)
   (and (> n 10) (ispower? n (sum-of-digits n))))
 
 
@@ -70,20 +70,20 @@
     (* n n)))           ;; initial seed
 
 
-;; Return nth-term of wierd (see above) numbers.
+;; Return nth-term of weird (see above) numbers.
 (define (p119-int max-digits-count nth-term)
   (let* ((max-digits-sum   (* 9 max-digits-count))
          (max-number       (digits->number (make-list max-digits-count 9)))
-         (wierd-numbers    (filter
-                             wierd-number?
+         (weird-numbers    (filter
+                             weird-number?
                              (uniq
                                (sort
                                  (apply append
                                         (map (curry number->powers max-number)
                                              (range 2 max-digits-sum)))
                                  <)))))
-    (and (>= (length wierd-numbers) nth-term)
-         (list-ref wierd-numbers (1- nth-term)))))
+    (and (>= (length weird-numbers) nth-term)
+         (list-ref weird-numbers (1- nth-term)))))
 
 
 (define (p119)

@@ -37,17 +37,14 @@
 ;; For off n r = remainder(2na,a^2).
 ;;
 (define (p123)
-  (let ((primes (list->vector (read-file-with "first-1000000-primes" string->number))))
-
-    ;; Get nth prime.
-    (define (p n) (vector-ref primes (1- n)))
-
-    ;; Compute nth remainder
-    (define (r n)
-      ((lambda (p) (remainder (* 2 n p) (* p p))) (p n)))
-
-    (call/cc (lambda (return) (dorange-ex n 7037 1000000 2
-                                (if (> (r n) 10000000000)
-                                  (return n)))))))
+  (let ((primes (list->vector 
+                  (read-file-with "first-1000000-primes" string->number))))
+    (call/cc 
+      (lambda (return) 
+        (dorange-ex n 7037 1000000 2
+          (let* ((p (vector-ref primes (1- n)))     ;; nth prime
+                 (r (remainder (* 2 n p) (* p p)))) ;; nth remainder
+            (if (> r 10000000000)
+              (return n))))))))
 ;; end of file
 ;; vim: sw=4 ts=4

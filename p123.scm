@@ -17,6 +17,9 @@
 ;; Find the least value of n for which the remainder first exceeds 1010.
 ;;
 ;; Answer: 21035
+;;
+;; NOTE: first-1000000-primes file was downloaded from
+;; NOTE: http://primes.utm.edu/lists/small/millions/
 
 
 (load "read-file.scm")

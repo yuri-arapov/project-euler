@@ -37,7 +37,7 @@
 ;; 
 ;; So remainder r is 2 when n is even.
 ;;
-;; For off n r = remainder(2na,a^2).
+;; For odd n r = remainder(2na,a^2).
 ;;
 (define (p123)
   (let ((primes (list->vector 

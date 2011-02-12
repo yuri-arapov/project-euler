@@ -3,18 +3,13 @@
 ;; Primes under 1000000.
 
 
+(load "read-file.scm")
+
+
 ;; Load primes from file.
 ;;
 (define (primes-1000000-load)
-
-  (define (read-primes f)
-    (let loop ((line (read-line f))
-               (res  '()))
-      (if (eof-object? line)
-        (reverse res)
-        (loop (read-line f) (cons (string->number line) res)))))
-
-  (call-with-input-file "primes-1000000" read-primes))
+  (read-file-with "primes-1000000" string->number))
 
 
 ;; List of primes under 1000000.

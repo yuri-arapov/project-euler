@@ -46,7 +46,7 @@
 ;;    (3 7) 
 ;;    (5 5))
 ;;
-;; NOTE: if n is prime the will be partition containing just n:
+;; NOTE: if n is prime then there will be partition containing just n:
 ;; (num->partitions 13) ->
 ;;   ((2 2 2 2 2 3) 
 ;;    ...

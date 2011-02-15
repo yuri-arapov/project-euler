@@ -36,7 +36,7 @@
 (define (s n) 
   (if (negative? n) 
     0
-    (* (1+ n) (/ n 2))))
+    (* (1+ n) n 1/2)))
 
 
 ;; Compute number of blocks of n-th layer of LxWxH cuboid.

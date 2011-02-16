@@ -107,7 +107,7 @@
 (define (p126-ex cuboids)
   (let loop ((max-area 300))
     (format #t "~a~%" max-area)
-    (or (time (foo cuboids max-area))
+    (or (time (min-layer-area cuboids max-area))
         (loop (* 2 max-area)))))
 
 

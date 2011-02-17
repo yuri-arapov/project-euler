@@ -31,7 +31,7 @@
            (tyou  (w->n  "TYOU"))
            (didit (w->n "DIDIT")))
       (and (= (+ grea tyou) didit)
-           (values grea tyou didit)))))
+           (list grea tyou didit)))))
 
 
 (define (solve-ext alphabet digits-ls)

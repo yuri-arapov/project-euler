@@ -2,7 +2,6 @@
 
 
 ;; Remove equal consecutive elements from the list.
-;;
 (defun uniq (s &key (equal-proc #'=))
   (if (null s)
     s

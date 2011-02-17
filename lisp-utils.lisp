@@ -37,9 +37,23 @@
           :initial-value init))
 
 
-
+;; Range of numbers, both lo and hi included, lo <= hi.
 (defun range (lo hi)
   (loop for n from lo to hi collect n))
+
+
+;; Remove equal consecutive elements from the list.
+(defun uniq (s &key (equal-proc #'=))
+  (if (null s)
+    s
+    (nreverse 
+      (reduce 
+        #'(lambda (res e) 
+            (if (funcall equal-proc (car res) e) 
+              res 
+              (cons e res)))
+        s
+        :initial-value (list (car s))))))
 
 
 ;; end of file

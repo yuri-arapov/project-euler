@@ -36,5 +36,11 @@
           :from-end t
           :initial-value init))
 
+
+
+(defun range (lo hi)
+  (loop for n from lo to hi collect n))
+
+
 ;; end of file
 ;; vim: et ts=4 sw=4

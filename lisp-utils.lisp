@@ -56,5 +56,15 @@
         :initial-value (list (car s))))))
 
 
+;; Same as Scheme's cons*.
+(defun cons* (first &rest rest)
+  (if (null rest) 
+    first
+    (cons first (apply #'cons* (car rest) (cdr rest)))))
+
+
+(defun positive? (x) (> x 0))
+
+
 ;; end of file
 ;; vim: et ts=4 sw=4

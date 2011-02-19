@@ -36,7 +36,7 @@
 (define (s n) 
   (if (negative? n) 
     0
-    (* (1+ n) n 1/2)))
+    (/ (* (1+ n) n) 2)))
 
 
 ;; Compute number of blocks of n-th layer of LxWxH cuboid.
@@ -107,7 +107,7 @@
 (define (p126-ex cuboids)
   (let loop ((max-area 300))
     (format #t "~a~%" max-area)
-    (or (time (min-layer-area cuboids max-area))
+    (or (min-layer-area cuboids max-area)
         (loop (* 2 max-area)))))
 
 

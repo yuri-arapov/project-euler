@@ -39,6 +39,14 @@
 (define (println s) (for-each (curry format #t "~a~%") s))
 
 
+(define (map-and-filter f s)
+  (fold-right (lambda (e res) 
+                (let ((r (f e)))
+                  (if r (cons r res) res)))
+              '()
+              s))
+
+
 (define (compose . funcs)
   (lambda (x) (fold-right (lambda (f res) (f res)) x funcs)))
 
@@ -66,11 +74,12 @@
       (let next ((i 1) (res '()))
         (if (= i n)
           res
-          (next (1+ i) (set-res res (filter-map (lambda (r) (from-parent r n)) (get-rows i)))))))
+          (next (1+ i) (set-res res (map-and-filter (lambda (r) (from-parent r n)) 
+                                                    (get-rows i)))))))
 
     (set-rows! 1 '((1)))
 
-    (dorange n 2 size
+    (dotimes (n 2 size)
       (set-rows! n (make-rows n)))
 
     (vector->list data)))

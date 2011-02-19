@@ -24,7 +24,7 @@
     (define (mark pos) (bitvector-set! bv pos #f))
 
     (define (mark-all pos)
-      (dorange x 2 (quotient maxn pos)
+      (dotimes (x 2 (quotient maxn pos))
         (mark (* pos x))))
 
     (format #t "ceiving...\n")

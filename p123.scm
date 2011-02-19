@@ -44,10 +44,12 @@
                   (read-file-with "first-1000000-primes" string->number))))
     (call/cc 
       (lambda (return) 
-        (dorange-ex n 7037 1000000 2
+        (dotimes (n 7037 1000000 2)
           (let* ((p (vector-ref primes (1- n)))     ;; nth prime
                  (r (remainder (* 2 n p) (* p p)))) ;; nth remainder
             (if (> r 10000000000)
               (return n))))))))
+
+
 ;; end of file
 ;; vim: sw=4 ts=4

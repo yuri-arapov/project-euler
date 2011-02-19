@@ -28,7 +28,7 @@
 
     (define (data-expand)
       (let ((new-data (make-vector (if (zero? count) 1 (* 2 count)))))
-        (dotimes i count
+        (dotimes (i count)
           (vector-set! new-data i (data-ref i)))
         (set! data new-data)))
 

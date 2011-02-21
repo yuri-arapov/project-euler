@@ -71,6 +71,7 @@
 ;;    (#t #t #t #f))
 ;;
 (define (mk-single-hole len)
+  (format #t "mk-single-hole~%")
   (let loop ((head  '(#f))
              (tail  (make-list (1- len) #t))
              (res   '()))
@@ -116,6 +117,7 @@
 ;;   (1 2 0 0 0)
 ;;
 (define (fill-holes seq digit fillers)
+  (format #t "fill-holes~%")
   (let loop ((s seq)
              (fillers fillers)
              (res '()))

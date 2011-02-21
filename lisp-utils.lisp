@@ -30,6 +30,11 @@
 
 
 ;; Scheme-to-List helper
+(defun fold-left (proc init list) 
+  (fold proc init list))
+
+
+;; Scheme-to-List helper
 (defun fold-right (proc init list)
   (reduce #'(lambda (i res) (funcall proc i res))
           list

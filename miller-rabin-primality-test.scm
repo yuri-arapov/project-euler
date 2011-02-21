@@ -25,7 +25,7 @@
       (= (expmod a (- n 1) n) 1))
     (cond ((= times 0) true)
           ((good? (+ (random (- n 3)) 2)) (prime? n (- times 1)))
-          (else false)))
+          (else #f)))
   (cond ((member n '(29341 294409 410041 512461 65241793)) #f)
         ((and (<= n 23) (member n '(2 3 5 7 11 13 17 19 23))) #t)
         (else (prime? n 20))))

@@ -23,11 +23,11 @@
 
     (cond ((null l)
            '())                ;; return empty list as a permutation of empty list:
-          ;;   () -> ()
+                               ;;   () -> ()
 
           ((null (cdr l))     
            (list l))           ;; return list containing initial list for one-item list:
-          ;;   (a) -> ((a))
+                               ;;   (a) -> ((a))
 
           (t
             (helper '() (length l) l))))) ;; run helper function
@@ -59,7 +59,7 @@
 
     (cond ((null l)
            '())                ;; return empty list as a permutation of empty list:
-          ;;   () -> ()
+                               ;;   () -> ()
 
           ((> n (length l))
            '())
@@ -69,7 +69,7 @@
 
           ((null (cdr l))     
            (list l))           ;; return list containing initial list for one-item list:
-          ;;   (a) -> ((a))
+                               ;;   (a) -> ((a))
 
           (t
             (helper '() (length l) l))))) ;; run helper function

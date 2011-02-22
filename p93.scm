@@ -177,15 +177,15 @@
 
 ;; All possible combinations of 4 operations by 3.
 ;;
-(define *ops (full-combinations (list add sub mul div) 3))
+(define *ops* (full-combinations (list add sub mul div) 3))
 
 
 ;; All possible combinations of c? functions applied with
 ;; possible combinations of operations.
 ;;
-(define *c-funcs 
+(define *c-funcs*
   (map (lambda (x) (make-c (car x) (cdr x)))
-       (product (list c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11) *ops)))
+       (product (list c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11) *ops*)))
 
 
 ;;
@@ -198,7 +198,7 @@
         (filter (lambda (n) (and (integer? n) (positive? n)))
                 (each-to-each 
                   (lambda (c o) (apply c o))
-                  *c-funcs 
+                  *c-funcs*
                   (permutations octet)))
         <))))
 

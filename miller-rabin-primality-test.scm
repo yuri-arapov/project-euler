@@ -23,7 +23,7 @@
   (define (prime? n times)
     (define (good? a)
       (= (expmod a (- n 1) n) 1))
-    (cond ((= times 0) true)
+    (cond ((= times 0) #t)
           ((good? (+ (random (- n 3)) 2)) (prime? n (- times 1)))
           (else #f)))
   (cond ((member n '(29341 294409 410041 512461 65241793)) #f)

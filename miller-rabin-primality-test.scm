@@ -28,6 +28,7 @@
           (else #f)))
   (cond ((member n '(29341 294409 410041 512461 65241793)) #f)
         ((and (<= n 23) (member n '(2 3 5 7 11 13 17 19 23))) #t)
+        ((< n 2) #f)
         (else (prime? n 20))))
 
 ;; end of file

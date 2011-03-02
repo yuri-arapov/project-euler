@@ -35,153 +35,42 @@
 ;;
 ;; Find the 2000th tile in this sequence.
 ;;
-;; Answer: 
+;; Answer: 14516824220
 
 
 (load "miller-rabin-primality-test.scm")
 
 
+;; Compute 1+2+..l+n
 (define (s n) (* (+ n 1) (/ n 2)))
 
 
+;; Compute value of of the node specified as number of circle (n)
+;; and node index on the circle (i).
+(define (ni->val n i)
+  (+ 2 i (* 6 (s (- n 1)))))
+
+
+;; Compute list of diffs between node A and its neighbours
+;; (non-prime diffs are omitted).
 (define (A n)
   (list 
-    (* 6 n)
     (+ (* 6 n) 1)
-    1
-    (* 6 (- n 1))
     (- (* 6 n) 1)
     (+ (* 12 n) 5)))
 
 
-(define (B n)
-  (list
-    (* 6 n)
-    (+ (* 6 n) 1)
-    1
-    (* 6 (- n 1))
-    (- (* 6 n) 5)
-    1))
-
-
-(define (C n)
-  (list
-    (* 6 n)
-    (+ (* 6 n) 1)
-    (+ (* 6 n) 2)
-    1
-    (- (* 6 n) 5)
-    1))
-
-
-(define (D n)
-  (list
-    1
-    (+ (* 6 n) 1)
-    (+ (* 6 n) 2)
-    1
-    (- (* 6 n) 5)
-    (- (* 6 n) 4)))
-
-
-(define (E n)
-  (list
-    1
-    (+ (* 6 n) 1)
-    (+ (* 6 n) 2)
-    (+ (* 6 n) 3)
-    1
-    (- (* 6 n) 4)))
-
-
-(define (F n)
-  (list
-    (- (* 6 n) 3)
-    1
-    (+ (* 6 n) 2)
-    (+ (* 6 n) 3)
-    1
-    (- (* 6 n) 2)))
-
-
-(define (G n)
-  (list
-    (- (* 6 n) 3)
-    1
-    (+ (* 6 n) 2)
-    (+ (* 6 n) 3)
-    (+ (* 6 n) 4)
-    1))
-
-
-(define (H n)
-  (list
-    (- (* 6 n) 3)
-    (- (* 6 n) 2)
-    1
-    (+ (* 6 n) 3)
-    (+ (* 6 n) 4)
-    1))
-
-
-(define (I n)
-  (list
-    1
-    (- (* 6 n) 2)
-    1
-    (+ (* 6 n) 3)
-    (+ (* 6 n) 4)
-    (+ (* 6 n) 5)))
-
-
-(define (J n)
-  (list
-    1
-    (- (* 6 n) 2)
-    (- (* 6 n) 1)
-    1
-    (+ (* 6 n) 4)
-    (+ (* 6 n) 5)))
-
-
-(define (K n)
-  (list
-    (+ (* 6 n) 6)
-    1
-    (- (* 6 n) 1)
-    1
-    (+ (* 6 n) 4)
-    (+ (* 6 n) 5)))
-
-
-(define (L n)
-  (list
-    (+ (* 6 n) 6)
-    1
-    (- (* 6 n) 1)
-    (* 6 n)
-    1
-    (+ (* 6 n) 5)))
-
-
+;; Compute list of diffs between node M and its neighbours
+;; (non-prime diffs are omitted).
 (define (M n)
   (list
-    (+ (* 6 n) 6)
     (- (* 6 n) 1)
     (- (* 12 n) 7)
-    (* 6 n)
-    1
     (+ (* 6 n) 5)))
 
 
-(define (fold-range proc init from to)
-  (let loop ((i from) (res init))
-    (if (> i to)
-      res
-      (loop (1+ i) (proc i res)))))
-
-
-(define (sort-uniq s)
+;; Sort and undup list of numbers.
+(define (uniq-sort s)
   (fold (lambda (e res)
           (if (and (not (null? res)) (= e (car res)))
             res
@@ -190,48 +79,39 @@
         (sort s <)))
 
 
-(define (ni->val n i)
-  (+ 2 i (* 6 (s (- n 1)))))
-
-
-(define (p128-x limit)
+;; Problem 128, limit provided.
+(define (p128-ex limit)
   (call/cc 
     (lambda (return)
-      (let loop ((n 2) (res 3))
-        (loop 
-          (1+ n)
-          (fold
-            (lambda (x res)
-              (let ((f    (car x))
-                    (from (cadr x))
-                    (to   (caddr x)))
-                (fold-range
-                  (lambda (i res)
-                    (if (= 3 (length (filter prime? (sort-uniq (f n)))))
-                      (begin
-                        (format #t "~a~%" (ni->val n i))
-                        (if (= limit (1+ res))
-                          (return (ni->val n i)))
-                        (+ res 1))
-                      res))
-                  res
-                  from 
-                  to)))
-            res
-            (list
-              (list A 0               0)
-              (list B 1               (- n 1))
-              (list C n               n)
-              (list D (+ n 1)         (- (* n 2) 1))
-              (list E (* n 2)         (* n 2))
-              (list F (+ (* n 2) 1)   (- (* n 3) 1))
-              (list G (* n 3)         (* n 3))
-              (list H (+ (* n 3) 1)   (- (* n 4) 1))
-              (list I (* n 4)         (* n 4))
-              (list J (+ (* n 4) 1)   (- (* n 5) 1))
-              (list K (* n 5)         (* n 5))
-              (list L (+ (* n 5) 1)   (- (* n 6) 2))
-              (list M (- (* n 6) 1)   (- (* n 6) 1)))))))))
+      (letrec ((inc-res 
+                 (lambda (res n i)
+                   (let ((res (1+ res))
+                         (val (ni->val n i)))
+                     (format #t "~a~%" val)
+                     (if (= limit res)
+                       (return val)
+                       res))))
+               (loop 
+                 (lambda (n res)
+                   (loop 
+                     (1+ n)
+                     (fold
+                       (lambda (x res)
+                         (let ((f (car x))
+                               (i (cdr x))) ; i is node index on the circle
+                           (if (= 3 (length (filter prime? (uniq-sort (f n)))))
+                             (inc-res res n i)
+                             res)))
+                       res
+                       (list
+                         (cons A 0)
+                         (cons M (- (* n 6) 1))))))))
+        (loop 2 3)))))
+
+
+;; Problem 128
+(define (p128)
+  (p128-ex 2000))
 
 
 ;; end of file

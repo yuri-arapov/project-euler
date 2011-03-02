@@ -18,21 +18,6 @@
 ;;
 ;;                     (picture here)
 ;;
-;;                           A
-;;                             M
-;;                      B         L
-;;                    C             K
-;;
-;;                    D             J
-;;
-;;                    E             I
-;;                       F       H
-;;                           G
-;;
-;; A C E G I K -- are corners.
-;; B D F H J L -- nodes on segments.
-;; M           -- node right before A.
-;;
 ;; By finding the difference between tile n and each its six neighbours we
 ;; shall define PD(n) to be the number of those differences which are prime.
 ;;
@@ -65,6 +50,23 @@
   (+ 2 i (* 6 (s (- n 1)))))
 
 
+;;        A
+;;          M
+;;   B         L
+;; C             K
+;;
+;; D             J
+;;
+;; E             I
+;;    F       H
+;;        G
+;;
+;; A C E G I K -- are corners.
+;; B D F H J L -- nodes on segments.
+;; M           -- node right before A.
+;;
+;; The only nodes that may contain three prime neighbour diffs are A and M.
+;;
 ;; Compute list of diffs between node A and its neighbours
 ;; (non-prime diffs are omitted).
 (define (A n)

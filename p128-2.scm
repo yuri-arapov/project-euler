@@ -41,7 +41,7 @@
 
 
 ;; Compute 1+2+..l+n
-(define (s n) (* (+ n 1) (/ n 2)))
+(define (s n) (/ (* (+ n 1) n) 2))
 
 
 ;; Compute value of of the node specified as number of circle (n)
@@ -99,30 +99,30 @@
 (define (p128-ex limit)
   (call/cc 
     (lambda (return)
-      (letrec ((inc-res 
-                 (lambda (res n i)
-                   (let ((res (1+ res))
-                         (val (ni->val n i)))
-                     (format #t "~a~%" val)
-                     (if (= limit res)
-                       (return val)
-                       res))))
+      (letrec ((test-return-continue
+                 (lambda (res val)
+                   (format #t "~a~%" val)
+                   (if (= limit res)
+                     (return val)
+                     res)))
                (loop 
-                 (lambda (n res)
+                 (lambda (n res)  ; n   -- number of the circle, 
+                                  ; res -- number of hits so far
                    (loop 
                      (1+ n)
                      (fold
                        (lambda (x res)
                          (let ((f (car x))
-                               (i (cdr x))) ; i is node index on the circle
+                               (i (cdr x))) ; i -- node index on the circle
                            (if (= 3 (length (filter prime? (uniq-sort (f n)))))
-                             (inc-res res n i)
+                             (test-return-continue (1+ res) (ni->val n i))
                              res)))
                        res
                        (list
                          (cons A 0)
                          (cons M (- (* n 6) 1))))))))
-        (loop 2 3)))))
+        (loop 2 3))))) ; 2 -- start from 2nd circle
+                       ; 3 -- one hit is central node, two hits on first circle
 
 
 ;; Problem 128

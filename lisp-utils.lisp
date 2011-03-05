@@ -74,5 +74,30 @@
 (defun take (s n) (subseq s 0 n))
 
 
+;; Scheme-to-Lisp helper.
+;; p -- stop confition: stop when (p seed) is true.
+;; f -- list element maker.
+;; g -- next seed.
+;; init -- initial seed value.
+(defun unfold (p f g init)
+  (loop for x = init then (funcall g x) 
+        until (funcall p x) 
+        collect (funcall f x)))
+
+
+;; Generate list elements by (elem-fn seed) calls until it returns
+;; NIL.  Next seed is obtained by (next-fn seed) call.
+;; Initial seed is 'init'.
+(defun generate-list (elem-fn next-fn init)
+  (flet ((g (s) (cons 
+                  (funcall elem-fn s)   ; car is element
+                  (funcall next-fn s)))); cdr is *next* seed
+    (unfold
+      #'(lambda (e) (not (car e)))      ; stop condition
+      #'(lambda (e) (car e))            ; list element
+      #'(lambda (e) (g (cdr e)))        ; pair: element - next seed
+      (g init))))
+
+
 ;; end of file
 ;; vim: et ts=4 sw=4

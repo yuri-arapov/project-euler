@@ -68,7 +68,10 @@
     (cons first (apply #'cons* (car rest) (cdr rest)))))
 
 
-(defun positive? (x) (> x 0))
+(defun positive? (x) (plusp x))
+
+
+(defun take (s n) (subseq s 0 n))
 
 
 ;; end of file

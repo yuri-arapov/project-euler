@@ -67,6 +67,9 @@
 ;; Answer: 376
 
 
+(load "read-file.scm")
+
+
 ;;
 ;; Engage 'receive'.
 ;;
@@ -89,22 +92,6 @@
 ;; Simple listing.
 ;;
 (define (ll x) (for-each (lambda (y) (format #t "~a\n" y)) x))
-
-
-;;
-;; Read poker game file, return list of strings.
-;; Each line contains ten records: first five records are cards of the
-;; player 1, and the next five records are cards of player 2.
-;;
-(define (read-poker-file name)
-  (let ((port (open-input-file name)))
-    (define (iter line res)
-      (cond ((eof-object? line)
-             (close-port port)
-             (reverse res))
-            (else
-              (iter (read-line port) (cons line res)))))
-    (iter (read-line port) '())))
 
 
 ;;
@@ -339,7 +326,7 @@
 ;; Read poker file, sort cards in each hand and do all the magic.
 ;;
 (define (p54)
-  (receive (p1 p2) (split-hands (read-poker-file "poker.txt"))
+  (receive (p1 p2) (split-hands (read-file "poker.txt"))
     (let ((pp1 (map sort-cards p1))
           (pp2 (map sort-cards p2)))
       (xx pp1 pp2))))

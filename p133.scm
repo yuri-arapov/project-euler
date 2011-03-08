@@ -27,7 +27,7 @@
 (load "scheme-utils.scm")   ; mod-pow
 
 
-(define ten^30 (expt 10 30))
+(define ten^30 (expt 10 30))    ; large enough power of ten
 
 
 (define (factor? p)

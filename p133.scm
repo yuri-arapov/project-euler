@@ -39,7 +39,7 @@
     (filter 
       (compose not factor?)
       (unfold
-        (lambda (s) (> (car s) limit))  ; stop when primes greater then given limit
+        (lambda (s) (> (car s) limit))  ; stop when primes > than given limit
         (lambda (s) (car s))            ; prime
         (lambda (s) (cdr s))            ; next prime
         (read-file-with "primes-1000000" string->number)))))

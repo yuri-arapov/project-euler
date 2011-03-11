@@ -23,7 +23,6 @@
 ;; Answer: 453647705
 
 
-(load "read-file.scm")
 (load "scheme-utils.scm")   ; mod-pow
 
 

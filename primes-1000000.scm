@@ -3,8 +3,6 @@
 ;; Primes under 1000000.
 
 
-(load "read-file.scm")
-
 
 ;; Load primes from file.
 ;;

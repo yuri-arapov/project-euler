@@ -31,7 +31,6 @@
 
 
 (load "integer-square-root.scm")
-(load "read-file.scm")
 (load "number-digits.scm")
 
 

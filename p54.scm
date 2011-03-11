@@ -67,8 +67,6 @@
 ;; Answer: 376
 
 
-(load "read-file.scm")
-
 
 ;;
 ;; Engage 'receive'.

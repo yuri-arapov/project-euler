@@ -21,9 +21,6 @@
 ;; Answer: 18613426663617118
 
 
-(load "read-file.scm")
-
-
 ;; Last decimal digit of the number.
 (define (last-digit n)
   (remainder n 10))

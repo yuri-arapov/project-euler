@@ -22,8 +22,6 @@
 ;; NOTE: http://primes.utm.edu/lists/small/millions/
 
 
-(load "read-file.scm")
-
 
 ;; Observe this in maxima:
 ;;

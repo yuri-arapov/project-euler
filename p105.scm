@@ -32,7 +32,6 @@
 ;; Answer: 73702
 
 
-(load "read-file.scm")
 (load "combinations.scm")
 
 

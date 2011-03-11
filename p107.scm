@@ -38,8 +38,6 @@
 ;;       algorithm, see http://en.wikipedia.org/wiki/Kruskal%27s_algorithm
 
 
-(load "read-file.scm")
-
 
 (define (make-matrix s)        (list->vector (map list->vector s)))
 (define (matrix-size n)        (vector-length n))

@@ -34,7 +34,7 @@
 
 
 (define (p133-ex limit)
-  (apply +
+  (apply + 3
     (filter 
       (compose not factor?)
       (unfold

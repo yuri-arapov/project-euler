@@ -28,7 +28,7 @@
 (defun quotient (n d) (truncate (/ n d)))
 
 
-(defun p136-ex (limit)
+(defun p136 (&optional (limit 50000000))
 
   (let ((hits (make-bitvector limit))
         (full (make-bitvector limit)))
@@ -55,10 +55,6 @@
     (loop for n from 0 to (1- limit)
           counting (and (not (full? n)) (hit? n)) into res
           finally (return res))))
-
-
-(defun p136 ()
-  (p136-ex 50000000))
 
 
 ;; end of file

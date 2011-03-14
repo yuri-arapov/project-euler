@@ -24,9 +24,7 @@
 (define (p136-ex limit)
 
   (let ((hits (make-bitvector limit))
-        (full (make-bitvector limit))
-        (counter 0)
-        (m-counter 0))
+        (full (make-bitvector limit)))
 
     (define (hit? n)  (bitvector-ref hits n))
     (define (full? n) (bitvector-ref full n))
@@ -43,14 +41,17 @@
 
       (dotimes (k (1+ (quotient y 4)) 
                   (min (1- y) (quotient (+ (1- limit) (* y y)) (* 4 y))))
-        (let ((n (- (* 4 k y) (* y y))))
-          (hit! n))))
+        (hit! (- (* 4 k y) (* y y)))))
 
     (let ((res 0))
       (dotimes (n 0 (1- limit))
         (if (and (not (full? n)) (hit? n))
           (set! res (1+ res))))
       res)))
+
+
+(define (p136)
+  (p136-ex 50000000))
 
 
 ;; end of file

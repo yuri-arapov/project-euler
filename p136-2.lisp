@@ -23,7 +23,9 @@
 
 (defun p136 (&optional (limit 50000000))
 
-  (let ((hits (make-array limit :element-type '(unsigned-byte 2))))
+  (let ((hits (make-array limit 
+                          :element-type '(unsigned-byte 2) 
+                          :initial-element 0)))
 
     (labels ((hit! (n) 
                (if (< (aref hits n) 2) 

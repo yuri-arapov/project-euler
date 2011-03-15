@@ -25,17 +25,19 @@
 
   (let ((hits (make-array limit :element-type '(unsigned-byte 2))))
 
-    (defun hit! (n) (if (< (aref hits n) 2) (incf (aref hits n))))
+    (labels ((hit! (n) 
+               (if (< (aref hits n) 2) 
+                 (incf (aref hits n)))))
 
-    (loop for y from 2 to (1- limit) do
+      (loop for y from 2 to (1- limit) do
+            (loop for k from (1+ (truncate (/ y 4)))
+                  to (min (1- y) 
+                          (truncate (/ (+ (1- limit) (* y y)) (* 4 y))))
+                  do (hit! (- (* 4 k y) (* y y)))))
 
-        (loop for k from (1+ (truncate (/ y 4)))
-                    to (min (1- y) (truncate (/ (+ (1- limit) (* y y)) (* 4 y))))
-           do (hit! (- (* 4 k y) (* y y)))))
-
-    (loop for n from 0 to (1- limit)
-          counting (= 1 (aref hits n)) into res
-          finally (return res))))
+      (loop for n from 0 to (1- limit)
+            counting (= 1 (aref hits n)) into res
+            finally (return res)))))
 
 
 ;; end of file

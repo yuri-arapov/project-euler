@@ -115,13 +115,14 @@
 ;; So I concluded that I can exploit this fact and use m from previos
 ;; iteration as n to compute next m.
 (define (p138-n)
+  (format #t "~2@a: ~8@a ~8@a  ~16@a ~16@a~%" "#" "m" "n" "b" "L")
   (let loop ((n 1) (count 0) (S 0))
     (if (= 12 count) S
       (let ((m (n->m n)))
         (if (not m)
           (error "failed to compute m by n =" n))
         (let-values (((b h l) (make-pt m n)))
-          (format #t "~2d: (~d ~d) ~d ~d~%" (1+ count) m n (* 2 h) l)
+          (format #t "~2d: ~8d ~8d  ~16d ~16d~%" (1+ count) m n (* 2 h) l)
           (loop m (1+ count) (+ S l)))))))
 
 

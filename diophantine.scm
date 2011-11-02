@@ -1,6 +1,6 @@
 ;; diophantine.scm
 ;;
-;; Solve Diophantine equation of 1-st degree:
+;; Solve linear Diophantine equation.
 ;;
 ;; Ax + By = C
 ;;

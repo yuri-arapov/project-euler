@@ -45,7 +45,7 @@
 ;;   (pell-equation 2) -> (3 . 2)
 (define (pell-equation D)
   (let loop ((n 1))
-    (let ((e (expand-cond-fract (square-root-cont-fract D n))))
+    (let ((e (expand-cont-fract (square-root-cont-fract D n))))
       (let ((x (numerator e))
             (y (denominator e)))
         (if (= 1 (- (sqr x) (* D (sqr y))))

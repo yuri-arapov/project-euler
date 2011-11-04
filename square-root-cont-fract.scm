@@ -39,12 +39,12 @@
 
 ;; Compute valued of continued fraction given as a list of 
 ;; coeffs an.
-;; Example: (expand-cond-fract '(1 2 2 2 2 2 2 2 2 2)) -> 3363/2378
-(define (expand-cond-fract an)
+;; Example: (expand-cont-fract '(1 2 2 2 2 2 2 2 2 2)) -> 3363/2378
+(define (expand-cont-fract an)
   (define (single? x) (and (list x) (null? (cdr x))))
   (if (single? an)
     (car an)
-    (+ (car an) (/ 1 (expand-cond-fract (cdr an))))))
+    (+ (car an) (/ 1 (expand-cont-fract (cdr an))))))
 
 
 ;; end of file

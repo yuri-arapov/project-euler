@@ -33,49 +33,138 @@
 ;; Note: This problem has been changed recently, please check that you are
 ;; using the right parameters.
 ;;
-;; Answer: 
+;; Answer: 30758397
 
 
-(define (square? x) (integer? (sqrt x)))
-(define (sqr x)     (* x x))
+(load "group-by.scm")
 
 
-(define limit 60000)
+(load "uniq.scm")
 
 
-(define *bv* (make-bitvector (1+ (sqr limit))))
-(dotimes (n limit) (bitvector-set! *bv* (* n n) #t))
-(define (square? n) (bitvector-ref *bv* n))
-
-
-(define (divisor? d x) (zero? (remainder x d)))
-
-
-(define (f1 p)
-  (let ((p2 (* p 2)))
+;; For given integer value p find list of pairs (x y) so that
+;; p*p = x*x + x*y + y*y, 
+;; where x and y are integers, and x < y.
+(define (f p)
+  (define (divisor? d x) (zero? (remainder x d)))
+  (let ((pp4 (* p p 4)))
     (let loop ((r (1- (* 2 p)))
                (res '()))
-      (let* ((p2-r (- p2 r))
-             (p2+r (+ p2 r)))
+      (let* ((x (sqrt (/ (- pp4 (* r r)) 3.)))
+             (y (/ (- r x) 2)))
         (cond
-          ((or (= r p) (>= (* 3 p2-r p2+r) (* r r)))
+          ((or (= r p) (> x y))
            (if (divisor? 1000 p)
              (format #t "~a~%" p))
            ;;;(format #t "~a ~a~%" p res)
            (reverse res))
 
-          ((and (not (divisor? 3 p2-r)) (not (divisor? 3 p2+r)))
-           (loop (1- r) res))
-
           (else
-            (let ((xx (/ (* p2-r p2+r) 3)))
-              (if (not (square? xx))
-                (loop (1- r) res)
-                (let* ((x (sqrt xx))
-                       (y (/ (- r x) 2)))
-                  (if (integer? y)
-                    (loop (1- r) (cons (cons x y) res))
-                    (loop (1- r) res)))))))))))
+            (loop 
+              (1- r)
+              (if (integer? y) 
+                (cons (cons x y) res)
+                res))))))))
+
+
+;; Read magic pairs from file, return list of lists containing
+;; magic pairs:
+;; (
+;;  ((1 2) (3 4) ...)
+;;  ((5 6) (7 8) ...)
+;; )
+;; The pairs where obtained by invocation of (f p) for each p in 1..120000
+;; range.
+(define (read-pairs fname)
+  (define (blank-line? line) (string=? line ""))
+  (read-file-with 
+    fname
+    (lambda (s)
+      (group-by 2
+         (map string->number
+           (filter (compose not blank-line?) (string-split s #\space)))))))
+
+
+(define (group-by-1st s)
+  (define (same? x y) (= (car x) (car y)))
+  (define (update-res x res) (cons (reverse x) res))
+
+  (let loop ((x (car s))
+             (tmp (list (car s)))
+             (s (cdr s))
+             (res '()))
+    (cond
+      ((null? s)
+       (map
+         (lambda (e) (cons (caar e) (map cadr e)))
+         (reverse (update-res tmp res))))
+
+      ((same? x (car s))
+       (loop x (cons (car s) tmp) (cdr s) res))
+
+      (else
+        (loop (car s) (list (car s)) (cdr s) (update-res tmp res))))))
+
+
+;; Solve problem 143 for given data.
+(define (p143-int limit fname)
+  (let* (
+         
+         ;; Read data from file: each line contains even number of numbers,
+         ;; each pair (x y) meets this condition: x*x + x*y + y*y = z*z, where
+         ;; x < y and z is integer.  The 'z' is the same for each line.
+         (a (read-pairs fname))
+
+         ;; for each pair (x y) add pair (y x) to each line:
+         ;; ((x1 y1) (x2 y2) ...) -> ((x1 y1) (x2 y2) ... (y1 x1) (y2 x2) ...)
+         (b (map (lambda (e) 
+                   (append e (map (lambda (i) (list (cadr i) (car i))) e)))
+                 a))
+
+         ;; flatten list: all the pairs in one list.
+         (c (fold (lambda (e res) (append e res)) '() b))
+
+         ;; sort pairs by first pair's element.
+         (d (sort c (with < car)))
+
+         ;; group pairs starting with the same number together:
+         ;; ((x1 y2) ...) -> ((x1 y1 ...) (x2 y2 ...) ...)
+         (e (group-by-1st d))
+
+         ;; store grouped data in vector: each xi element of the vector will
+         ;; contain (yi ...) list.
+         (f (let ((v (make-vector (1+ limit) '())))
+              (for-each (lambda (x) (vector-set! v (car x) (cdr x))) e)
+              v))
+
+         ;; make list of triples (p q r) so that the following chain exists:
+         ;; (p q) -> (q r) -> (r q)
+         (g (let loop ((p limit) (res '()))
+              (if (zero? p) res
+                (loop 
+                  (1- p)
+                  (fold
+                    (lambda (q res)
+                      (fold
+                        (lambda (r res)
+                          (if (and (member p (vector-ref f r)) 
+                                   (<= (+ p r q) limit))
+                            (cons (sort (list p r q) <) res)
+                            res))
+                        res
+                        (vector-ref f q)))
+                    res
+                    (vector-ref f p))))))
+
+         ;; compute p+q+r, sort and undup.
+         (h (undup (sort (map (lambda (e) (apply + e)) g) <))))
+
+    (list (apply + h) h)))
+
+
+(define (p143)
+  (p143-int 120000 "143.data"))
+
 
 
 ;; end of file

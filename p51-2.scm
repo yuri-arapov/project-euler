@@ -70,12 +70,9 @@
   (let loop ((res '())
              (pos 0)
              (ls  digits))
-    (cond ((null? ls)
-           (reverse res))
-          ((= (car ls) d)
-           (loop (cons pos res) (+ 1 pos) (cdr ls)))
-          (else
-            (loop res (+ 1 pos) (cdr ls))))))
+    (if (null? ls)
+      (reverse res)
+      (loop (if (= (car ls) d) (cons pos res) res) (1+ pos) (cdr ls)))))
 
 
 ;; Replace all the digits in 'digits' list with given 'new-digit'

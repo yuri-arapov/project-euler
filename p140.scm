@@ -134,14 +134,14 @@
 ;;    2     2
 ;;   x  - Dy  = 1
 (define (generate rs D tu-list)
-  (cons rs
-        (map (lambda (i)
-               (let ((r (car rs))
-                     (s (cdr rs))
-                     (t (car i))
-                     (u (cdr i)))
-                 (general-pell-equation-solutions r s D t u)))
-             tu-list)))
+  (let ((r (car rs))
+        (s (cdr rs)))
+    (cons rs
+          (map (lambda (tu)
+                 (let ((t (car tu))
+                       (u (cdr tu)))
+                   (general-pell-equation-solutions r s D t u)))
+               tu-list))))
 
 
 ;; Solve problem 140.

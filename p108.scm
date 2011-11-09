@@ -120,10 +120,10 @@
 
 
 ;; s is a ((2 3) (3 1) ...) -like list
-;;        | |
-;;        | divisor's power
-;;        |
-;;        prime divisor
+;;          | |
+;;          | divisor's power
+;;          |
+;;          prime divisor
 ;;
 ;; (make-factors '((2 3) (3 1))) -> ((8 4 2) (3))
 ;;

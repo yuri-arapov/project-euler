@@ -48,10 +48,8 @@
 (define (prefix? pref s)
   (cond
     ((null? pref) s)
-    ((null? s) #f)
-    ((not (eq? (car s) (car pref))) #f)
-    (else
-      (prefix? (cdr pref) (cdr s)))))
+    ((or (null? s) (not (eq? (car s) (car pref)))) #f)
+    (else (prefix? (cdr pref) (cdr s)))))
 
 
 ;; Apply pred function on elements of sequence s and return
@@ -59,11 +57,9 @@
 ;; Return #f in case of no success.
 ;;
 (define (first-match pred s)
-  (if (null? s)
-    #f
+  (if (null? s) #f
     (let ((res (pred (car s))))
-      (if res
-        res
+      (if res res
         (first-match pred (cdr s))))))
 
 
@@ -71,20 +67,20 @@
 ;; IMPORTANT: Order does matter, the greater romans must go first,
 ;; IMPORTANT: so the roman->number function would work correctly.
 ;;
-(define romans
-  (list (cons 1000  "M")
-        (cons  900 "CM")
-        (cons  500  "D")
-        (cons  400 "CD")
-        (cons  100  "C")
-        (cons   90 "XC")
-        (cons   50  "L")
-        (cons   40 "XL")
-        (cons   10  "X")
-        (cons    9 "IX")
-        (cons    5  "V")
-        (cons    4 "IV")
-        (cons    1  "I")))
+(define *romans*
+  '((1000 .  "M")
+    ( 900 . "CM")
+    ( 500 .  "D")
+    ( 400 . "CD")
+    ( 100 .  "C")
+    (  90 . "XC")
+    (  50 .  "L")
+    (  40 . "XL")
+    (  10 .  "X")
+    (   9 . "IX")
+    (   5 .  "V")
+    (   4 . "IV")
+    (   1 .  "I")))
 
 
 ;; Convert roman number (string) into number.
@@ -95,8 +91,8 @@
   (let ((r (map (lambda (i) 
                   (cons (car i) 
                         (string->list (cdr i))))
-                romans)))
-    (let loop ((s (map char-upcase (string->list s)))
+                *romans*)))
+    (let loop ((s (string->list (string-upcase s)))
                (n 0))
       (if (null? s)
         n
@@ -118,7 +114,7 @@
 ;;
 (define (number->roman n)
   (let loop ((n n)
-             (r romans)
+             (r *romans*)
              (res ""))
     (if (zero? n)
       res
@@ -129,22 +125,10 @@
           (loop n (cdr r) res))))))
 
 
-;; Read roman numbers (one string per line) from file.
-;;
-(define (read-romans file)
-  (define (read-lines port)
-    (let loop ((res '()))
-      (let ((line (read-line port)))
-        (if (eof-object? line)
-          (reverse res)
-          (loop (cons line res))))))
-  (call-with-input-file file read-lines))
-
-
 ;; Solve problem 89.
 ;;
 (define (p89)
-  (let* ((a (read-romans "roman.txt"))
+  (let* ((a (iterate-input-file cons '() "roman.txt"))
          (b (map (lambda (i)
                    (number->roman (roman->number i)))
                  a))

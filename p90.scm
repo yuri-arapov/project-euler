@@ -42,10 +42,10 @@
 ;; How many distinct arrangements of the two cubes allow for all of the square
 ;; numbers to be displayed?
 ;;
-;; Answer:
+;; Answer: 1217
 
 
-(load "permutations.scm")
+(load "combinations.scm")
 
 
 (define (dice->number dice)
@@ -62,27 +62,19 @@
         (and (logbit? sd2 dice1) (logbit? sd1 dice2)))))
 
 
-(define *counter* 0)
-
-
 (define (bingo? x y)
-  (set! *counter* (1+ *counter*))
-  (if (zero? (remainder *counter* 100000))
-    (format #t "~10:d ~a ~a\n" *counter* x y))
   (every 
     (lambda (i)
-      (any
-        (lambda (j) (square-number? x y j))
-        i))
-    '(((2 5))
-      ((8 1))
-      ((3 6) (3 9))
-      ((0 1))
-      ((0 4))
-      ((0 9) (0 6))
-      ((1 6) (1 9))
-      ((4 9) (4 6))
-      ((6 4) (9 4)))))
+      (any (lambda (j) (square-number? x y j)) i))
+  '(((2 5))
+    ((1 8))
+    ((3 6) (3 9))
+    ((0 1))
+    ((0 4))
+    ((0 9) (0 6))
+    ((1 6) (1 9))
+    ((4 9) (4 6))
+    ((6 4) (9 4)))))
 
 
 (define (p90-int)
@@ -90,22 +82,20 @@
   (define (loop2 i s)
     (let loop ((s s)
                (res 0))
-      (if (null? s)
-        res
-        (loop (cdr s) 
-              (if (bingo? i (car s))
-                (1+ res)
+      (if (null? s) res
+        (loop (cdr s)
+              (if (bingo? i (car s)) (1+ res)
                 res)))))
 
-  (let* ((x1 (permutations-n '(0 1 2 3 4 5 6 7 8 9) 6))
-         (x2 (filter (lambda (i) (or (member 2 i) (member 5 i))) x1))
-         (x3 (map dice->number x2)))
+  (let loop ((s (map dice->number (combinations '(0 1 2 3 4 5 6 7 8 9) 6)))
+             (res 0))
+    (if (null? s) res
+      (loop (cdr s) (+ res (loop2 (car s) (cdr s)))))))
 
-    (let loop ((s x3)
-               (res 0))
-      (if (null? s)
-        res
-        (loop (cdr s) (+ res (loop2 (car s) (cdr s))))))))
+
+(define (p90)
+  (p90-int))
+
 
 ;; end of file
 ;; vim: sw=4 ts=4

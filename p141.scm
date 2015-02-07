@@ -80,7 +80,6 @@
 
 
 ;; problem solver
-(define (p141-limit limit)
 (define (p141)
   (p141-limit (expt 10 12)))
 

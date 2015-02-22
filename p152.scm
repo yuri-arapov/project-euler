@@ -2,6 +2,8 @@
 ;; Feb. 18, 2015
 
 
+(define (sqr n) (* n n))
+
 
 (define (p152-size size)
   (let* ((v (make-vector (1+ size) 0))
@@ -12,7 +14,7 @@
          (bingo 0))
 
     (dotimes (i 2 size)
-      (vector-set! v i (/ (* i i))))
+      (vector-set! v i (/ (sqr i))))
     (vector-set! r size (val size))
     (dotimes-rev (i (1- size) 2)
       (vector-set! r i (+ (vector-ref r (1+ i)) (vector-ref v i))))
@@ -44,7 +46,6 @@
 ;;      (helper 1/2025 '(36 35 28 20 10 9 7 6 4 3 2) 37)
       (values bingo counter))))
 
-(define (sqr n) (* n n))
 
 (define (p152-size-2 size)
   (let* ((x (make-vector (1+ size) 0))

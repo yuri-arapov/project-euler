@@ -1,5 +1,13 @@
 ;;
 ;; Feb. 18, 2015
+;;
+;; Answer: 301
+;;
+;; Not soleved, but found solution in the internet.
+;; The key point is that not all of 2..80 number should be included into
+;; candidates list but only some very limited subset of them.
+;;
+;; Whith this adjustment problem is soleved under 1 minute.
 
 
 (define (sqr n) (* n n))
@@ -8,90 +16,61 @@
 (define (p152-size size)
   (let* ((v (make-vector (1+ size) 0))
          (r (make-vector (1+ size) 0))
+         (f (make-vector (1+ size) #f))
          (stock (lambda (i) (vector-ref r i)))
          (val (lambda (i) (vector-ref v i)))
-         (counter 0)
+         (fff (lambda (i) (vector-ref f i)))
+         (call-count 0)
          (bingo 0))
+
+    (for-each (lambda (n)
+                (if (<= n size) (vector-set! f n #t)))
+              ;; list of possible candidates
+;;            '(2 3 4 5 6 7 8 9 10 12 13 14 15 18 20 21 24 28 30 35 36 39 40 42 45 52 56 60 63 64 70 72))
+              '(2 3 4 5 6 7 8 9 10 12 13 14 15 18 20 21 24 28 30 35 36 39 40 42 45 52 56 60 63    70 72))
+;;            '(2 3 4 5 6 7 8 9 10 12    14 15 18 20 21 24 28 30 35 36    40 42 45    56 60 63    70 72))
 
     (dotimes (i 2 size)
       (vector-set! v i (/ (sqr i))))
+
     (vector-set! r size (val size))
     (dotimes-rev (i (1- size) 2)
       (vector-set! r i (+ (vector-ref r (1+ i)) (vector-ref v i))))
 
-    (letrec ((helper (lambda (target acc start)
-                       (set! counter (1+ counter))
-                       (if (zero? (remainder counter 100000)) 
-                         (format #t "~:d ~a ~a ~a___\r" counter (reverse acc) start (* 1. target)))
-                       (cond 
-;;;                         ((= bingo 1) #f)
-                         ((zero? target) 
-                          (set! bingo (1+ bingo)) 
-                          (format #t "\n*** ~a (~:d)\n" (reverse acc) counter))
-
-                         ((> start size) #f)
-
-                         (else
-                           (if (>= target (val start))
-                             (helper (- target (val start))
-                                     (cons start acc)
-                                     (1+ start)))
-                           (if (and (< start size) (<= target (stock (1+ start))))
-                             (helper target
-                                     acc
-                                     (1+ start))))))))
-
-      (helper 1/2 '() 2)
-;;      (helper 1/1225 '(2 3 4 5 7 12 15 20 28) 34)
-;;      (helper 1/2025 '(36 35 28 20 10 9 7 6 4 3 2) 37)
-      (values bingo counter))))
-
-
-(define (p152-size-2 size)
-  (let* ((x (make-vector (1+ size) 0))
-         (y (make-vector (1+ size) 0))
-         (w (apply lcm (map sqr (iota (1- size) 2))))
-         (val (lambda (i) (vector-ref x i)))
-         (stk (lambda (i) (vector-ref y i)))
-         (call-count 0)
-         (bingo 0))
-
-    (dotimes (i 2 size)
-      (vector-set! x i (/ w (sqr i))))
-
-    (format #t "~a\n" w)
-    (format #t "~a\n" x)
-
-    (vector-set! y size (val size))
-    (dotimes-rev (i (1- size) 2)
-      (vector-set! y i (+ (vector-ref y (1+ i)) (val i))))
-
     (letrec ((helper (lambda (target acc pos)
                        (set! call-count (1+ call-count))
-                       (if (zero? (remainder call-count 100000)) 
-                         (format #t "~:d ~a ~a ~a___\r" call-count (reverse acc) pos (* 1. target)))
+;;;                       (if (zero? (remainder call-count 100000))
+;;;                         (format #t "~:d ~a ~a ~a___\r" call-count (reverse acc) pos (* 1. target)))
 
-                       (cond 
-;;;                         ((= bingo 1) #f)
+                       (cond
                          ((zero? target)
                           (set! bingo (1+ bingo))
-                          (format #t "\n*** ~a (~:d)\n" (reverse acc) call-count))
+                          (format #t "\n*** ~a (~:d)\n" (reverse acc) call-count)
+                          (helper (val (car acc)) (cdr acc) pos))
 
                          ((> pos size) #f)
+
+                         ((not (fff pos))
+                          (helper target acc (1+ pos)))
 
                          (else
                            (if (>= target (val pos))
                              (helper (- target (val pos))
                                      (cons pos acc)
                                      (1+ pos)))
-                           (if (and (< pos size) (<= target (stk (1+ pos))))
+                           (if (and (< pos size) (<= target (stock (1+ pos))))
                              (helper target
                                      acc
                                      (1+ pos))))))))
 
-      (helper (* 2 (val 2)) '() 2)
+      (helper 1/2 '() 2)
+;;      (helper 1/1225 '(2 3 4 5 7 12 15 20 28) 34)
+;;      (helper 1/2025 '(36 35 28 20 10 9 7 6 4 3 2) 37)
+      (format #t "\n\n")
       (values bingo call-count))))
 
+
+(define (p152) (p152-size 80))
 
 
 ;; end of file

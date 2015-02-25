@@ -7,7 +7,7 @@
 ;; The key point is that not all of 2..80 number should be included into
 ;; candidates list but only some very limited subset of them.
 ;;
-;; Whith this adjustment problem is soleved under 1 minute.
+;; With this adjustment problem is soleved under 1 minute.
 
 
 (define (sqr n) (* n n))

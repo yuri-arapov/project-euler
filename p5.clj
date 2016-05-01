@@ -39,9 +39,9 @@
           (> (first f1) (first f2)) (recur (conj res (first f2)) f1 (rest f2)))))
 
 (defn lcm [n & more]
-  (apply 
-    *
-    (reduce (fn [res x] (combine-factors res (factorize x))) (factorize n) more)))
+  (apply
+   *
+   (reduce (fn [res x] (combine-factors res (factorize x))) (factorize n) more)))
 
 (defn p5 []
   (apply lcm (range 2 21)))
@@ -49,4 +49,3 @@
 
 
 ;; end of file
-

@@ -22,12 +22,11 @@
 ;;       25164150
 ;;       25164150
 
-
 (defn square [n] (* n n))
 
-(defn p6[]
+(defn p6 []
+  "p6"
   (- (square (apply + (range 1 101)))
      (apply + (map square (range 1 101)))))
-
 
 ;; end of file

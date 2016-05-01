@@ -1,0 +1,76 @@
+Reading Files in Clojure
+
+There are a few ways to read files in Clojure.
+
+slurp
+
+If you want to simply read a small file into a string then you can use slurp.
+This function works with local files as well as URLs.
+
+An example:
+
+user=> (print (slurp "/Users/brad/.bashrc"))
+
+clojure.java.io
+
+The clojure.java.io namespace contains a reader function that returns a
+java.io.Reader. Make sure to call this inside a with-open call.
+
+To use clojure.java.io place the following namespace declaration at the top of
+your file.
+
+(ns your-namespace-name
+   (:require [clojure.java.io :as io]))
+
+If you are in the repl and in user you can just require clojure.java.io like
+this.
+
+(require '[clojure.java.io :as io])
+
+as an example you can read a file and print it line by line.
+
+user=> (with-open [rdr (io/reader "/Users/brad/.bashrc")]
+         (doseq [line (line-seq rdr)]
+            (println line)))
+
+Lazy
+
+The thing to notice in this example is that the code (print line) that is using
+the contents of the file is inside a with-open call. Also, the reader is being
+passed to the line-seq call, the return from which is a lazy sequence of
+strings from the file.
+
+This lazy sequence concept is important to understand when working with
+Clojure. One way to look at is by considering what it is not. The lazy sequence
+is not an array which holds the entire set of strings but rather a mechanism
+that can get you the strings in a sequence as you need them.
+
+In this example the doseq is doing the iterating by pulling each subsequent
+line out of the line-seq into line.
+
+So, if you use this example you must realize that what you want to do to each
+line must be inside the with-open so the file stays open and with a sequence
+function like doseq to iterate over the sequence. This might seem foreign to
+readers expecting to call a function to get all the lines in a file, then
+iterate over them and then pass each line to a function. Here we must think
+functionally.
+
+doall
+
+If you must have the entire set of strings from the file returned from your
+function you must realize the entire lazy sequence. The doall is used to do
+this.
+
+In the following example you see doall is passed the line-seq results. Here
+doall will iterate through the entire sequence and return the fully realized
+sequence. Try the following and you see a list of strings returned.
+
+(with-open [rdr (io/reader "/Users/brad/.bashrc")]
+    (doall (line-seq rdr)))
+
+Now, suppose you want to print those lists. See how you can again look through
+the sequence and print them.
+
+(doseq [line (with-open [rdr (io/reader "/Users/brad/.bashrc")]
+    (doall (line-seq rdr)))] (println line))))
+

@@ -13,18 +13,15 @@
 ;;  Answer: 104743
 
 (defn square [n] 
-  "[n]"
   (* n n))
 
-(defn prime? [n primes-so-far]
-  "[n primes-so-far]"
+(defn prime?  [n primes-so-far]
   (cond (empty? primes-so-far) true
         (zero? (rem n (first primes-so-far))) false
         (> (square (first primes-so-far)) n) true
         :else (recur n (rest primes-so-far))))
 
 (defn p7 []
-  "[]"
   (loop [n 3, primes [2], cnt 1]
     (if (prime? n primes)
       (if (= cnt 10000) n

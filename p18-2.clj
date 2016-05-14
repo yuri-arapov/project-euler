@@ -80,4 +80,8 @@
                                        (route (inc row) (inc col))))))))]
       (route 0 0))))
 
+(defn p18 []
+  (max-route triangle))
+
+
 ;;

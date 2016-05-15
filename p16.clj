@@ -17,6 +17,6 @@
 (load-file "pe_utils.clj")
 
 (defn p16 []
-  (apply + (number->digigs (apply * (repeat 1000 2N)))))
+  (apply + (number->digits (apply * (repeat 1000 2N)))))
 
 ;; end of file

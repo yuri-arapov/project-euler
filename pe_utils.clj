@@ -1,7 +1,7 @@
 ;; Project Euler utils.
 
 
-(defn number->digigs [n]
+(defn number->digits [n]
   (if (zero? n) '(0)
       (loop [res '(), n n]
         (if (zero? n) res

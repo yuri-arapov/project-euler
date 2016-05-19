@@ -29,7 +29,7 @@
 
 (defn up [n] (loop [u 10] (if (> u n) u (recur (* u 10)))))
 
-(defn rec-cycle [n]
+(defn recur-cycles [n]
   (loop [m {}, u (up n), idx 0]
     (let [r (rem u n)]
       (cond (zero? r) 0
@@ -42,7 +42,7 @@
 
 (defn p26
   ([to]
-   (reduce (fn [res n] (max-res res [n (rec-cycle n)])) [2 0] (range 3 (inc to))))
+   (reduce (fn [res n] (max-res res [n (recur-cycles n)])) [2 0] (range 3 (inc to))))
   ([]
    (p26 1000)))
 

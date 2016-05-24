@@ -22,12 +22,14 @@
 (load-file "pe_utils.clj")
 
 
+(defn same? [len s1 s2]
+  (cond (zero? len) true
+        (not (= (first s1) (first s2))) false
+        :else (recur (dec len) (rest s1) (rest s2))))
+
 (defn palindromic? [n base]
-  (let [digits   (number->digits n base)
-        half-len (quot (count digits) 2)
-        head     (take half-len digits)
-        tail     (take half-len (reverse digits))]
-    (= head tail)))
+  (let [digits   (number->digits n base)]
+    (same? (quot (count digits) 2) digits (reverse digits))))
 
 
 (defn p36 []

@@ -55,14 +55,23 @@
                     (recur n))
                 r)))
 
+        make-enumerator
+          (fn []
+            (let [idx (atom -1)]
+              (fn []
+                (swap! idx inc)
+                (while (<= (count @primes) @idx) (compute-next-prime))
+                (get @primes @idx))))
         ]
 
     (fn [operator & args]
-      (cond (= operator :first) (png-first)
-            (= operator :next)  (png-next)
-            (= operator :last)  (png-last)
-            (= operator :show)  @primes
-            (= operator :count) (count @primes)
+      (cond (= operator :first) (png-first)      ;; first prime
+            (= operator :next)  (png-next)       ;; next prime (from current one)
+            (= operator :last)  (png-last)       ;; last computed prime
+            (= operator :show)  @primes          ;; all primes computed so far
+            (= operator :count) (count @primes)  ;; number of the primes computed
+
+            (= operator :primes)(repeatedly (make-enumerator))
 
             (= operator :prime?)
               (cond (empty? args) nil

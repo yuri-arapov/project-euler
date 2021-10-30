@@ -38,8 +38,49 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/yuridichesky/project-euler/go/factor"
+)
+
+func numberToPrimes(n int64) map[int64]int64 {
+	png := factor.NewPNG()
+	x := png.Factor(n)
+	var y = map[int64]int64{}
+	for _, p := range x {
+		y[p] = y[p] + 1
+	}
+	return y
+}
+
+func p5(n int64) int64 {
+	var primes = map[int64]int64{}
+	for i := int64(2); i <= n; i++ {
+		pi := numberToPrimes(i)
+		for p, pwr := range pi {
+			if primes[p] < pwr {
+				primes[p] = pwr
+			}
+		}
+	}
+	fmt.Printf("p5(%v) primes %v\n", n, primes)
+	var res int64 = 1
+	for p, pwr := range primes {
+		res *= power(p, pwr)
+	}
+	return res
+}
+
+func power(n, pwr int64) int64 {
+	var res int64 = 1
+	for i := int64(1); i <= pwr; i++ {
+		res *= n
+	}
+	return res
+}
 
 func main() {
-	fmt.Println(232792560)
+	for _, n := range []int64{10, 20} {
+		fmt.Println(n, p5(n))
+	}
 }

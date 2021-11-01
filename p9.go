@@ -16,16 +16,17 @@ package main
 import "fmt"
 
 func main() {
-	var a, b, c int
-	a = 2
+	var a int = 2
+	var b, c int
 Loop:
 	for ; ; a++ {
 		b = a + 1
 		for ; ; b++ {
-			c = 1000 - (a + b)
+			c = 1000 - (a + b) // a+b+c=1000
 			if c <= b {
 				break
 			}
+			// a<b<c
 			if a*a+b*b == c*c {
 				break Loop
 			}

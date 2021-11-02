@@ -16,7 +16,7 @@ func NewPNG() PNG {
 	}
 }
 
-// Number of prives computed so far.
+// Number of primes computed so far.
 func (png *PNG) Count() int {
 	return len(png.primes)
 }
